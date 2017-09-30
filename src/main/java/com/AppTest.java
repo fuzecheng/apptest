@@ -19,7 +19,9 @@ import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+import utils.AndroidDevice;
 import utils.BaseTestCase;
+import watcher.PermissionWatcher;
 
 
 import java.io.File;
@@ -77,10 +79,11 @@ public class AppTest extends BaseTestCase{
 //        capabilities.setCapability("unicodeKeyboard", "True");
 //        capabilities.setCapability("resetKeyboard", "True");
         //初始化 需要setDriver,否则会空指针异常
-        setdriver(driver);
         driver = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
-
+        setdriver(driver);
         action=new TouchAction(driver);
+//        driver.registerWatcher("uiWatcher",new PermissionWatcher(driver));
+//        driver.runWatchers();
 
     }
 
@@ -120,9 +123,7 @@ public class AppTest extends BaseTestCase{
                 flag++;
                      }
              }
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
+
     }
     @Test
     public void testcase2(){
@@ -141,15 +142,20 @@ public class AppTest extends BaseTestCase{
         longClick("com.tct.launcher:id/all_app_blur_view");
         element=driver.findElement(By.id("com.tct.launcher:id/settings_button"));
         element.click();
+        List<WebElement> elements=driver.findElements(By.id("android:id/switchWidget"));
+        elements.get(1).click();
+
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
 
     }
     
     @AfterTest
     public void tearDown(){
-        driver.removeApp("com.tct.launcher");
+//        driver.removeApp("com.tct.launcher");
         driver.quit();
 
     }
