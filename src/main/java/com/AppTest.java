@@ -2,6 +2,7 @@ package com;
 
 import com.sun.deploy.security.ValidationState;
 import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.MobileElement;
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidDriver;
 
@@ -16,6 +17,7 @@ import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -28,9 +30,7 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 
 import static io.appium.java_client.android.AndroidKeyCode.HOME;
@@ -43,10 +43,11 @@ import static io.appium.java_client.android.AndroidKeyCode.HOME;
 public class AppTest extends BaseTestCase{
 
         WebElement element;
-        TouchAction action;
         List setupeliment;
+        List elements;
+        HashMap<String,By> map;
         public Logger logger = LoggerFactory.getLogger(AppTest.class);
-        AndroidDriver driver;
+
 
 
     @BeforeTest
@@ -54,11 +55,11 @@ public class AppTest extends BaseTestCase{
         //设置apk的路径
         File classpathRoot = new File(System.getProperty("user.dir"));
         File appDir = new File(classpathRoot, "apps");
-        File app = new File(appDir, "2018launcher_v4.apk");
+        File app = new File(appDir, "2018launcher_v5.apk");
 
         //设置自动化相关参数
         DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setCapability(CapabilityType.BROWSER_NAME, "");
+        capabilities.setCapability(CapabilityType.SUPPORTS_LOCATION_CONTEXT, "");
         capabilities.setCapability("platformName", "Android");
         //PZAIQC5995LJ6HF6 33004c65ac88c2f9 0123456789ABCDEF
         capabilities.setCapability("deviceName", "192.168.185.101:5555");
@@ -79,30 +80,28 @@ public class AppTest extends BaseTestCase{
 //        capabilities.setCapability("unicodeKeyboard", "True");
 //        capabilities.setCapability("resetKeyboard", "True");
         //初始化 需要setDriver,否则会空指针异常
-        driver = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
-        setdriver(driver);
+        driver = new AndroidDevice(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
         action=new TouchAction(driver);
+        driver.context("NATIVE_APP");
+        setdriver(driver);
+        elements=new LinkedList();
+        map=new LinkedHashMap<String,By>();
+
 //        driver.registerWatcher("uiWatcher",new PermissionWatcher(driver));
 //        driver.runWatchers();
+
 
     }
 
 
     @Test
-    public void testcase1()  {
+    public void testInstallsetUp()  {
       //  androidDriver.pressKeyCode(AndroidKeyCode.HOME);
-//        try {
-//        WebElement element=driver.findElement(By.name("Add Contact"));
-//        element.click();
-//        List<WebElement>  text=driver.findElementsByClassName("android.widget.EditText");
 //
 //        text.get(0).sendKeys("123");
 //        text.get(1).sendKeys("456");
 //        driver.findElement(By.name("Save")).click();
 //        driver.getKeyboard().sendKeys("");
-
-//          element.findElement(By.name("总是"));
-//          element.click();
 
         setupeliment=new LinkedList<>();
         setupeliment.add(By.name("Allow"));
@@ -124,63 +123,136 @@ public class AppTest extends BaseTestCase{
                      }
              }
 
+
     }
     @Test
-    public void testcase2(){
+    public void testLoginApps(){
+        driver.pressKeyCode(AndroidKeyCode.HOME);
+        element=driver.findElement(By.name("Apps"));
+        element.click();
+        map.put("com.tct.launcher:id/launcher",By.id("com.tct.launcher:id/launcher"));
+        map.put("com.tct.launcher:id/drag_layer",By.id("com.tct.launcher:id/drag_layer"));
+        map.put("com.tct.launcher:id/workspace",By.id("com.tct.launcher:id/workspace"));
+        map.put("com.tct.launcher:id/apps_view",By.id("com.tct.launcher:id/apps_view"));
+        map.put("com.tct.launcher:id/main_content",By.id("com.tct.launcher:id/main_content"));
+        map.put("com.tct.launcher:id/search_container",By.id("com.tct.launcher:id/search_container"));
+        map.put("com.tct.launcher:id/apps_list_view",By.id("com.tct.launcher:id/apps_list_view"));
+
+        Iterator iterator=map.entrySet().iterator();
+        while (iterator.hasNext()){
+            Map.Entry entry=(Map.Entry) iterator.next();
+            By by=(By) entry.getValue();
+            if (!isElementExist(by)){
+              Assert.assertFalse(true,"NULL:"+entry.getKey());
+            }
+        }
+        driver.pressKeyCode(AndroidKeyCode.HOME);
+    }
+    @Test
+    public  void testDefineIscreen() throws InterruptedException {
+        driver.pressKeyCode(AndroidKeyCode.HOME);
+        sleep(1000);
+        driver.swipeRight();
+        allow();
+        if (isElementExist(By.id("com.tcl.mie.launcher.lscreen:id/layPopWin"))){
+            Assert.assertTrue(true);
+        }else {
+            Assert.assertFalse(true,"ISCREEN IS null");
+        }
+        driver.pressKeyCode(AndroidKeyCode.HOME);
+    }
+
+
+
+    @Test
+    public void testIscreenClose(){
         try {
         //操作wifi
         //androidDriver.setConnection(Connection.WIFI);
-//          driver.wait(1000);
-        //  androidDriver.setConnection(Connection.WIFI);
-        element=driver.findElement(By.name("Apps"));
-        element.click();
-        driver.pressKeyCode(AndroidKeyCode.HOME);
+
         Thread.sleep(2000);
-//        element=androidDriver.findElement(By.id("com.tct.launcher:id/all_app_blur_view"));
-//        action.longPress(698,937,Duration.ofSeconds(3000));
-//        action.longPress(element,Duration.ofSeconds(3000));
+        controlSettingsButton();
+        sleep(1000);
+        driver.swipeRight();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if (isElementExist(By.id("com.tcl.mie.launcher.lscreen:id/layPopWin"))){
+            Assert.assertFalse(true,"ISCREEN IS exist");
+        }else {
+            Assert.assertTrue(true);
+        }
+
+
+    }
+
+
+
+    @Test
+    public void testIscreenOpen() throws InterruptedException {
+       // driver.swipe(381,818,694,814,300);
+
+
+//        sleep(1000);
+//        driver.swipeDown();
+//        sleep(1000);
+//        driver.swipeUp();
+//        sleep(1000);
+//        driver.swipeLeft();
+//        sleep(1000);
+//        driver.swipeRight();
+//        sleep(1000);
+        controlSettingsButton();
+        sleep(1000);
+        driver.swipeRight();
+        allow();
+        if (isElementExist(By.id("com.tcl.mie.launcher.lscreen:id/layPopWin"))){
+            Assert.assertTrue(true);
+        }else {
+            Assert.assertFalse(true,"ISCREEN IS null,can not find com.tcl.mie.launcher.lscreen:id/layPopWin");
+        }
+
+    }
+
+    public void loginWallpapers(){
+        longClick("com.tct.launcher:id/all_app_blur_view");
+        element.findElement(By.id("com.tct.launcher:id/wallpaper_button")).click();
+        
+
+
+    }
+
+
+    public void controlSettingsButton() throws InterruptedException {
         longClick("com.tct.launcher:id/all_app_blur_view");
         element=driver.findElement(By.id("com.tct.launcher:id/settings_button"));
         element.click();
         List<WebElement> elements=driver.findElements(By.id("android:id/switchWidget"));
         elements.get(1).click();
-
-
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
+        sleep(500);
+        driver.pressKeyCode(AndroidKeyCode.HOME);
 
     }
+
+
     
     @AfterTest
     public void tearDown(){
-//        driver.removeApp("com.tct.launcher");
+        driver.removeApp("com.tct.launcher");
         driver.quit();
 
-    }
-    public  void longClick(String id){
-        WebElement longClick = driver.findElement(By.id(id));
-        action.longPress(longClick).waitAction(Duration.ofSeconds(3)).perform();
-
 
     }
 
-
-    public boolean isElementExist(By Locator) {
-        try {
-            driver.findElement(Locator);
-            return true;
-        } catch (org.openqa.selenium.NoSuchElementException ex) {
-            return false;
+    public void allow(){
+        while(isElementExist(By.name("Allow"))){
+            driver.findElement(By.name("Allow")).click();
+            try {
+                sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
-    public void exsitClick(By element){
-        if (isElementExist(element)){
-           driver.findElement(element).click();
-        }else {
 
-        }
-
-    }
 }
