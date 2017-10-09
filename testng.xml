@@ -7,11 +7,11 @@
         <class name="com.AppTest">
             <methods >
                 <include name="testInstallsetUp"/>
-                <include name="testLoginApps"/>
-                <include name="testDefineIscreen"/>
-                <include name="testIscreenClose"/>
-                <include name="testIscreenOpen"/>
-
+                <!--<include name="testLoginApps"/>-->
+                <!--<include name="testDefineIscreen"/>-->
+                <!--<include name="testIscreenClose"/>-->
+                <!--<include name="testIscreenOpen"/>-->
+                <include name="loginWallpaper"/>
             </methods>
         </class>
     </classes>
