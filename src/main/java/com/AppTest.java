@@ -217,8 +217,6 @@ public class AppTest extends BaseTestCase{
     public void loginWallpapers(){
         longClick("com.tct.launcher:id/all_app_blur_view");
         element.findElement(By.id("com.tct.launcher:id/wallpaper_button")).click();
-        
-
 
     }
 
