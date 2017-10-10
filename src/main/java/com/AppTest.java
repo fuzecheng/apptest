@@ -27,9 +27,6 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import utils.AndroidDevice;
 import utils.BaseTestCase;
-import utils.ScreenUtil;
-import utils.TestdroidImageRecognition;
-import watcher.PermissionWatcher;
 
 
 import java.awt.image.BufferedImage;
@@ -43,6 +40,7 @@ import java.util.*;
 
 import static io.appium.java_client.android.AndroidKeyCode.HOME;
 import static org.junit.Assert.assertTrue;
+import static org.testng.Assert.assertFalse;
 
 /**
  * Created by Administrator on 2017/9/3.
@@ -53,7 +51,7 @@ public class AppTest extends BaseTestCase{
 
         WebElement element;
         List setupeliment;
-        List elements;
+        List<WebElement> elements;
         HashMap<String,By> map;
         public Logger logger = LoggerFactory.getLogger(AppTest.class);
 
@@ -102,7 +100,10 @@ public class AppTest extends BaseTestCase{
 
     }
 
-
+    /**
+     * 初始化APP
+     * @throws InterruptedException
+     */
     @Test
     public void testInstallsetUp() throws InterruptedException {
       //  androidDriver.pressKeyCode(AndroidKeyCode.HOME);
@@ -123,11 +124,11 @@ public class AppTest extends BaseTestCase{
             By by=(By) iterator.next();
             if (flag==1){
                 driver.pressKeyCode(AndroidKeyCode.HOME);
-                sleep(1);
+                sleep(500);
                     exsitClick(by);
                     flag++;
                  }else {
-                    sleep(1);
+                    sleep(500);
                     exsitClick(by);
                 flag++;
                      }
@@ -138,12 +139,12 @@ public class AppTest extends BaseTestCase{
 
 
     /**
-     *
+     * 检查应用抽屉
      */
     @Test
     public void testLoginApps() throws InterruptedException {
         driver.pressKeyCode(AndroidKeyCode.HOME);
-        sleep(1);
+        sleep(1000);
         element=driver.findElement(By.name("Apps"));
         element.click();
         map.put("com.tct.launcher:id/launcher",By.id("com.tct.launcher:id/launcher"));
@@ -159,7 +160,7 @@ public class AppTest extends BaseTestCase{
             Map.Entry entry=(Map.Entry) iterator.next();
             By by=(By) entry.getValue();
             if (!isElementExist(by)){
-              Assert.assertFalse(true,"NULL:"+entry.getKey());
+              assertFalse(true,"NULL:"+entry.getKey());
             }
         }
         driver.pressKeyCode(AndroidKeyCode.HOME);
@@ -170,7 +171,7 @@ public class AppTest extends BaseTestCase{
      * @throws InterruptedException
      */
     @Test
-    public  void testDefineIscreen() throws InterruptedException {
+    public  void testDefaultIscreen() throws InterruptedException {
         driver.pressKeyCode(AndroidKeyCode.HOME);
         sleep(1000);
         driver.swipeRight();
@@ -178,12 +179,12 @@ public class AppTest extends BaseTestCase{
         if (isElementExist(By.id("com.tcl.mie.launcher.lscreen:id/layPopWin"))){
             Assert.assertTrue(true);
         }else {
-            Assert.assertFalse(true,"ISCREEN IS null");
+            assertFalse(true,"ISCREEN IS null");
         }
         driver.pressKeyCode(AndroidKeyCode.HOME);
     }
     /**
-     * -1屏关
+     * -1屏 关
      */
     @Test
     public void testIscreenClose(){
@@ -191,7 +192,7 @@ public class AppTest extends BaseTestCase{
         //操作wifi
         //androidDriver.setConnection(Connection.WIFI);
 
-        Thread.sleep(2000);
+        sleep(2000);
         controlSettingsButton();
         sleep(1000);
         driver.swipeRight();
@@ -199,45 +200,53 @@ public class AppTest extends BaseTestCase{
             e.printStackTrace();
         }
         if (isElementExist(By.id("com.tcl.mie.launcher.lscreen:id/layPopWin"))){
-            Assert.assertFalse(true,"ISCREEN IS exist");
+            assertFalse(true,"ISCREEN IS exist");
         }else {
-            Assert.assertTrue(true);
+          assertTrue(true);
         }
 
 
     }
         /**
-                -1屏开
+                -1屏 开
          */
     @Test
     public void testIscreenOpen() throws InterruptedException {
        // driver.swipe(381,818,694,814,300);
-
-
-//        sleep(1000);
-//        driver.swipeDown();
-//        sleep(1000);
-//        driver.swipeUp();
-//        sleep(1000);
-//        driver.swipeLeft();
-//        sleep(1000);
-//        driver.swipeRight();
-//        sleep(1000);
         controlSettingsButton();
         sleep(1000);
         driver.swipeRight();
         allow();
         if (isElementExist(By.id("com.tcl.mie.launcher.lscreen:id/layPopWin"))){
-            Assert.assertTrue(true);
+           assertTrue(true);
         }else {
-            Assert.assertFalse(true,"ISCREEN IS null,can not find com.tcl.mie.launcher.lscreen:id/layPopWin");
+           assertFalse(true,"ISCREEN IS null,can not find com.tcl.mie.launcher.lscreen:id/layPopWin");
         }
 
     }
 
-
+    /**
+     * 替换壁纸
+     * @throws InterruptedException
+     * @throws IOException
+     */
     @Test
-    public void testChangeWallapaper(){
+    public void testChangeWallpaper() throws InterruptedException, IOException {
+        loginWallpaper();
+        elements=driver.findElements(By.id("com.tct.launcher:id/wallpaper_image"));
+        elements.get(2).click();
+        element=driver.findElement(By.id("com.tct.launcher:id/set_wallpaper_button"));
+        element.click();
+        sleep(4000);
+        assertTrue("Wallpaper is different",imgCompare("wallpaper","wallpaper"));
+        //还原
+        loginWallpaper();
+        elements=driver.findElements(By.id("com.tct.launcher:id/wallpaper_image"));
+        elements.get(1).click();
+        element=driver.findElement(By.id("com.tct.launcher:id/set_wallpaper_button"));
+        element.click();
+        sleep(4000);
+        assertTrue("Default paper is different",imgCompare("default_paper","default_paper"));
 
 
     }
@@ -254,7 +263,7 @@ public class AppTest extends BaseTestCase{
         longClick("com.tct.launcher:id/all_app_blur_view");
         element=driver.findElement(By.id("com.tct.launcher:id/settings_button"));
         element.click();
-        List<WebElement> elements=driver.findElements(By.id("android:id/switchWidget"));
+        elements=driver.findElements(By.id("android:id/switchWidget"));
         elements.get(1).click();
         sleep(500);
         driver.pressKeyCode(AndroidKeyCode.HOME);
@@ -267,7 +276,6 @@ public class AppTest extends BaseTestCase{
     public void tearDown(){
         driver.removeApp("com.tct.launcher");
         driver.quit();
-
 
     }
 
@@ -285,39 +293,11 @@ public class AppTest extends BaseTestCase{
     /**
      * 进入背景界面
      */
-
-    @Test
-    public void loginWallpaper() throws Exception {
-//        ImageRecognitionSettings settings = new ImageRecognitionSettings();
-//        settings.setRetries(3);
-//        settings.setTolerance(0.60);
-//        settings.setCrop(true);
-//
-//
-//        driver.pressKeyCode(AndroidKeyCode.HOME);
-//       TestdroidImageRecognition testdroidImageRecognition= new TestdroidImageRecognition(driver);
-//       testdroidImageRecognition.takeScreenshot("sam");
-//
-////        longClick("com.tct.launcher:id/all_app_blur_view");
-////        element=driver.findElement(By.id("com.tct.launcher:id/wallpaper_button"));
-////        element.click();
-//        ImageSearchResult result = testdroidImageRecognition.findImageOnScreen("sam.png",settings);
-////        Assert.assertFalse(result.isFound());
-//        Assert.assertTrue(result.isFound());
-        sleep(2);
-        File f1 = driver.getScreenshotAs(OutputType.FILE);
-        FileUtils.copyFile(f1, new File("target/reports/screenshots/sam1.png"));
-        BufferedImage img1 = ScreenUtil.getImageFromFile(f1);
-        sleep(2);
-        File f2 = driver.getScreenshotAs(OutputType.FILE);
-        FileUtils.copyFile(f2, new File("target/reports/screenshots/sam2.png"));
-        BufferedImage img2 = ScreenUtil.getImageFromFile(f2);
-
-        Boolean same =ScreenUtil.sameAs(img1, img2, 0.9);
-        assertTrue(same);
-
-
-
+    public void loginWallpaper(){
+        driver.pressKeyCode(AndroidKeyCode.HOME);
+        longClick("com.tct.launcher:id/all_app_blur_view");
+        element=driver.findElement(By.id("com.tct.launcher:id/wallpaper_button"));
+        element.click();
 
     }
 

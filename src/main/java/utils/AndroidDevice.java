@@ -9,6 +9,7 @@ import jdk.internal.instrumentation.Tracer;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.HttpCommandExecutor;
 import org.openqa.selenium.remote.http.HttpClient;
 import org.slf4j.Logger;
@@ -241,6 +242,13 @@ public class AndroidDevice extends AndroidDriver {
                 (rootLocation.getX() + rootSize.getWidth() - rightOffset + offset),
                 center.getY(),
                 duration);
+    }
+
+    public void slide(WebElement origin_el, WebElement destination_el)
+    {
+        // appium converts longPress-moveto-release to a slide action
+        TouchAction touchAction = new TouchAction(this);
+        touchAction.longPress(origin_el).moveTo(destination_el).release().perform();
     }
 
 
