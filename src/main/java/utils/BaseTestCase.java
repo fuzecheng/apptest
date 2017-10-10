@@ -1,10 +1,8 @@
 package utils;
 
-import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.MobileDriver;
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.TouchAction;
-import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.events.EventFiringWebDriverFactory;
+import io.appium.java_client.events.api.general.ElementEventListener;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.slf4j.Logger;
@@ -20,6 +18,42 @@ public class BaseTestCase {
     public static Logger logger= LoggerFactory.getLogger(BaseTestCase.class);
     public static TouchAction action;
 
+
+    public void setupLisetenr(){
+
+
+        driver= EventFiringWebDriverFactory.getEventFiringWebDriver(driver, new ElementEventListener() {
+            @Override
+            public void beforeClickOn(WebElement element, WebDriver driver) {
+
+            }
+
+            @Override
+            public void afterClickOn(WebElement element, WebDriver driver) {
+
+            }
+
+            @Override
+            public void beforeChangeValueOf(WebElement element, WebDriver driver) {
+
+            }
+
+            @Override
+            public void beforeChangeValueOf(WebElement element, WebDriver driver, CharSequence[] keysToSend) {
+
+            }
+
+            @Override
+            public void afterChangeValueOf(WebElement element, WebDriver driver) {
+
+            }
+
+            @Override
+            public void afterChangeValueOf(WebElement element, WebDriver driver, CharSequence[] keysToSend) {
+
+            }
+        });
+    }
 
 
     public void setdriver(AndroidDevice driver){

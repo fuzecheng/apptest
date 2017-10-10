@@ -1,22 +1,11 @@
 package com;
 
-import com.sun.deploy.security.ValidationState;
-import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.TouchAction;
-import io.appium.java_client.android.AndroidDriver;
 
 
 import io.appium.java_client.android.AndroidKeyCode;
-import io.appium.java_client.android.Connection;
-import objects.ImageRecognitionSettings;
-import objects.ImageSearchResult;
-import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
-import org.openqa.selenium.OutputType;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.mobile.NetworkConnection;
-import org.openqa.selenium.net.NetworkUtils;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.Logger;
@@ -29,16 +18,13 @@ import utils.AndroidDevice;
 import utils.BaseTestCase;
 
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.time.Duration;
 import java.util.*;
 
 
-import static io.appium.java_client.android.AndroidKeyCode.HOME;
 import static org.junit.Assert.assertTrue;
 import static org.testng.Assert.assertFalse;
 
@@ -88,6 +74,7 @@ public class AppTest extends BaseTestCase{
 //        capabilities.setCapability("resetKeyboard", "True");
         //初始化 需要setDriver,否则会空指针异常
         driver = new AndroidDevice(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
+        setupLisetenr();
         action=new TouchAction(driver);
         driver.context("NATIVE_APP");
         setdriver(driver);
@@ -114,7 +101,7 @@ public class AppTest extends BaseTestCase{
 //        driver.getKeyboard().sendKeys("");
 
         setupeliment=new LinkedList<>();
-        allow();
+//        allow();
         setupeliment.add(By.name("GOT IT"));
         setupeliment.add(By.name("Joy Launcher"));
         setupeliment.add(By.name("Always"));
@@ -249,18 +236,14 @@ public class AppTest extends BaseTestCase{
         assertTrue("Default paper is different",imgCompare("default_paper","default_paper"));
     }
     @Test
-    public void testWidget(){
+    public void testWidget() throws InterruptedException {
         loginWidget();
         elements=driver.findElements(By.id("com.tct.launcher:id/widget_preview"));
         element=driver.findElement(By.className("android.view.ViewGroup"));
-        driver.slide( elements.get(0),element);
+        driver.slide(elements.get(0),element);
+        sleep(1000);
     }
 
-    public void loginWallpapers(){
-        longClick("com.tct.launcher:id/all_app_blur_view");
-        element.findElement(By.id("com.tct.launcher:id/wallpaper_button")).click();
-
-    }
 
     /**
      * 操作-1屏开关按钮
@@ -313,6 +296,11 @@ public class AppTest extends BaseTestCase{
         longClick("com.tct.launcher:id/all_app_blur_view");
         element=driver.findElement(By.id("com.tct.launcher:id/widget_button"));
         element.click();
+//        List<LogEntry> crashEntries = driver.manage().logs().get("crashlog").getAll();
+//
+//        if (crashEntries.size() > 0) {
+//            logger.info("CRASH ENTRY DETECTED"+crashEntries.get(0).getMessage());
+//        }
     }
 
 
