@@ -247,8 +247,13 @@ public class AppTest extends BaseTestCase{
         element.click();
         sleep(4000);
         assertTrue("Default paper is different",imgCompare("default_paper","default_paper"));
-
-
+    }
+    @Test
+    public void testWidget(){
+        loginWidget();
+        elements=driver.findElements(By.id("com.tct.launcher:id/widget_preview"));
+        element=driver.findElement(By.className("android.view.ViewGroup"));
+        driver.slide( elements.get(0),element);
     }
 
     public void loginWallpapers(){
@@ -257,9 +262,12 @@ public class AppTest extends BaseTestCase{
 
     }
 
+    /**
+     * 操作-1屏开关按钮
+     * @throws InterruptedException
+     */
 
     public void controlSettingsButton() throws InterruptedException {
-
         longClick("com.tct.launcher:id/all_app_blur_view");
         element=driver.findElement(By.id("com.tct.launcher:id/settings_button"));
         element.click();
@@ -299,6 +307,12 @@ public class AppTest extends BaseTestCase{
         element=driver.findElement(By.id("com.tct.launcher:id/wallpaper_button"));
         element.click();
 
+    }
+    public void loginWidget(){
+        driver.pressKeyCode(AndroidKeyCode.HOME);
+        longClick("com.tct.launcher:id/all_app_blur_view");
+        element=driver.findElement(By.id("com.tct.launcher:id/widget_button"));
+        element.click();
     }
 
 
