@@ -19,48 +19,6 @@ public class BaseTestCase {
     public static TouchAction action;
 
 
-
-//    public void setupLisetenr(){
-//        driver= EventFiringWebDriverFactory.getEventFiringWebDriver(driver, new ElementEventListener() {
-//
-//
-//            @Override
-//            public void beforeClickOn(WebElement element, WebDriver driver) {
-//                if (isElementExist(By.name("Allow"))){
-//                    driver.findElement(By.name("Allow")).click();
-//                }else if (isElementExist("new UiSelector().textContains(\"Add note\")")){
-//                    driver.findElement(By.name("OK")).click();
-//                }
-//            }
-//
-//            @Override
-//            public void afterClickOn(WebElement element, WebDriver driver) {
-//
-//            }
-//
-//            @Override
-//            public void beforeChangeValueOf(WebElement element, WebDriver driver) {
-//
-//            }
-//
-//            @Override
-//            public void beforeChangeValueOf(WebElement element, WebDriver driver, CharSequence[] keysToSend) {
-//
-//            }
-//
-//            @Override
-//            public void afterChangeValueOf(WebElement element, WebDriver driver) {
-//
-//            }
-//
-//            @Override
-//            public void afterChangeValueOf(WebElement element, WebDriver driver, CharSequence[] keysToSend) {
-//
-//            }
-//        });
-//    }
-
-
     public void setdriver(AndroidDevice driver){
         this.driver=driver;
     }
@@ -73,7 +31,6 @@ public class BaseTestCase {
         Thread.sleep(seconds);
     }
 
-    //Stops the script for the given amount of seconds.
 
 
     public static void log(String message) {
@@ -87,12 +44,16 @@ public class BaseTestCase {
 
 
     }
-//    public void swipeTest(int startX,int startY,int deltaX,int deltaY){
-//        int offsetx=deltaX-startX;
-//        int offsety=deltaY-startY;
-//        driver.swipe();
-//    }
 
+
+    public static boolean isElementExist(AndroidDevice driver,By Locator) {
+        try {
+            driver.findElement(Locator);
+            return true;
+        } catch (org.openqa.selenium.NoSuchElementException ex) {
+            return false;
+        }
+    }
 
     public static boolean isElementExist(By Locator) {
         try {
@@ -111,6 +72,16 @@ public class BaseTestCase {
         }
 
     }
+    public static boolean isElementExist(AndroidDevice driver,String uiautomator){
+        try {
+            driver.findElementByAndroidUIAutomator(uiautomator);
+            return true;
+        } catch (org.openqa.selenium.NoSuchElementException ex) {
+            return false;
+        }
+
+    }
+
     public void exsitClick(By element){
         if (isElementExist(element)){
             driver.findElement(element).click();

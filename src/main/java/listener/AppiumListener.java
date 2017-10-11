@@ -4,9 +4,22 @@ import io.appium.java_client.events.api.general.AppiumWebDriverEventListener;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import utils.AndroidDevice;
 import utils.BaseTestCase;
 
 public class AppiumListener implements AppiumWebDriverEventListener {
+    private Logger logger = LoggerFactory.getLogger(AppiumListener.class);
+
+    AndroidDevice androidDevice;
+
+    public AppiumListener(AndroidDevice androidDevice){
+        this.androidDevice=androidDevice;
+
+    }
+
+
     @Override
     public void beforeChangeValueOf(WebElement element, WebDriver driver) {
 
@@ -79,26 +92,31 @@ public class AppiumListener implements AppiumWebDriverEventListener {
 
     @Override
     public void beforeFindBy(By by, WebElement element, WebDriver driver) {
+        //System.out.println("beforeFindBy:"+by.toString());
+        if (by.toString().equals("By.name: OK")||BaseTestCase.isElementExist("new UiSelector().textContains(\"Unfortunately\")")){
+            logger.error("-------------crash--------------");
+            androidDevice.findElement(By.name("OK")).click();
+
+        }
 
     }
 
     @Override
     public void afterFindBy(By by, WebElement element, WebDriver driver) {
-        if (BaseTestCase.isElementExist(by.name("Allow"))){
-            driver.findElement(by.name("Allow")).click();
-        }else if (BaseTestCase.isElementExist("new UiSelector().textContains(\"Add note\")")){
-            driver.findElement(by.name("OK")).click();
-        }
+      //  System.out.println("afterFindBy:"+by.toString());
+//        if (by.toString().equals("By.name: OK")){
+//            logger.info("崩溃");
+//        }
     }
 
     @Override
     public void beforeClickOn(WebElement element, WebDriver driver) {
-
+       // System.out.println("beforeClickOn:");
     }
 
     @Override
     public void afterClickOn(WebElement element, WebDriver driver) {
-
+       // System.out.println("afterClickOn:");
     }
 
     @Override
@@ -123,7 +141,6 @@ public class AppiumListener implements AppiumWebDriverEventListener {
 
     @Override
     public void onException(Throwable throwable, WebDriver driver) {
-        System.err.println("抛出异常原因是: " + throwable.getMessage());
 
     }
 }

@@ -47,7 +47,7 @@ public class AppTest extends BaseTestCase{
         List<WebElement> elements;
         HashMap<String,By> map;
         public Logger logger = LoggerFactory.getLogger(AppTest.class);
-        EventFiringWebDriver eventDriver;
+//        EventFiringWebDriver eventDriver;
 
 
 
@@ -57,7 +57,7 @@ public class AppTest extends BaseTestCase{
         File classpathRoot = new File(System.getProperty("user.dir"));
         File appDir = new File(classpathRoot, "apps");
         File app = new File(appDir, "2018launcher_v5.apk");
-        ElementEventListener elementEventListener=new  ElementEventListener();
+//        ElementEventListener elementEventListener=new  ElementEventListener();
         //设置自动化相关参数
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability(CapabilityType.SUPPORTS_LOCATION_CONTEXT, "");
@@ -89,13 +89,12 @@ public class AppTest extends BaseTestCase{
         elements=new LinkedList();
         map=new LinkedHashMap<String,By>();
 
+       driver=EventFiringWebDriverFactory.getEventFiringWebDriver(driver,new AppiumListener(driver));
+//
+//        WebDriver.Navigation navigate = driver.navigate();
+//        eventDriver=new EventFiringWebDriver(driver);
+//        eventDriver.register(new AppiumListener());
 
-        WebDriver.Navigation navigate = driver.navigate();
-        eventDriver=new EventFiringWebDriver(driver);
-        eventDriver.register(new AppiumListener());
-//        setupLisetenr();
-//        driver.registerWatcher("uiWatcher",new PermissionWatcher(driver));
-//        driver.runWatchers();
 
 
     }
@@ -114,7 +113,7 @@ public class AppTest extends BaseTestCase{
 //        driver.getKeyboard().sendKeys("");
 
         setupeliment=new LinkedList<>();
-//        allow();
+        allow();
         setupeliment.add(By.name("GOT IT"));
         setupeliment.add(By.name("Joy Launcher"));
         setupeliment.add(By.name("Always"));
@@ -126,7 +125,7 @@ public class AppTest extends BaseTestCase{
                 driver.pressKeyCode(AndroidKeyCode.HOME);
                 sleep(500);
                     exsitClick(by);
-                    flag++;
+                flag++;
                  }else {
                     sleep(500);
                     exsitClick(by);
@@ -250,11 +249,17 @@ public class AppTest extends BaseTestCase{
     }
     @Test
     public void testWidget() throws InterruptedException {
-        loginWidget();
-        elements=driver.findElements(By.id("com.tct.launcher:id/widget_preview"));
-        element=driver.findElement(By.className("android.view.ViewGroup"));
-        driver.slide(elements.get(0),element);
-        sleep(1000);
+
+            loginWidget();
+            elements = driver.findElements(By.id("com.tct.launcher:id/widget_preview"));
+            element = driver.findElement(By.className("android.view.ViewGroup"));
+            driver.slide(elements.get(0), element);
+            sleep(2000);
+//          driver.findElement(By.className("android.widget.CheckBox")).click();
+//          driver.findElement(By.name("Create")).click();
+            driver.findElement(By.name("OK")).click();
+            sleep(5000);
+            element = driver.findElement(By.className("android.view.ViewGroup"));
 
     }
 
@@ -288,7 +293,7 @@ public class AppTest extends BaseTestCase{
         while(isElementExist(By.name("Allow"))){
             driver.findElement(By.name("Allow")).click();
             try {
-                sleep(500);
+                sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
