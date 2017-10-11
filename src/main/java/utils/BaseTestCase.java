@@ -14,46 +14,51 @@ import java.io.IOException;
 import java.time.Duration;
 
 public class BaseTestCase {
-    public AndroidDevice driver;
+    public static AndroidDevice driver;
     public static Logger logger= LoggerFactory.getLogger(BaseTestCase.class);
     public static TouchAction action;
 
 
-    public void setupLisetenr(){
 
-
-        driver= EventFiringWebDriverFactory.getEventFiringWebDriver(driver, new ElementEventListener() {
-            @Override
-            public void beforeClickOn(WebElement element, WebDriver driver) {
-
-            }
-
-            @Override
-            public void afterClickOn(WebElement element, WebDriver driver) {
-
-            }
-
-            @Override
-            public void beforeChangeValueOf(WebElement element, WebDriver driver) {
-
-            }
-
-            @Override
-            public void beforeChangeValueOf(WebElement element, WebDriver driver, CharSequence[] keysToSend) {
-
-            }
-
-            @Override
-            public void afterChangeValueOf(WebElement element, WebDriver driver) {
-
-            }
-
-            @Override
-            public void afterChangeValueOf(WebElement element, WebDriver driver, CharSequence[] keysToSend) {
-
-            }
-        });
-    }
+//    public void setupLisetenr(){
+//        driver= EventFiringWebDriverFactory.getEventFiringWebDriver(driver, new ElementEventListener() {
+//
+//
+//            @Override
+//            public void beforeClickOn(WebElement element, WebDriver driver) {
+//                if (isElementExist(By.name("Allow"))){
+//                    driver.findElement(By.name("Allow")).click();
+//                }else if (isElementExist("new UiSelector().textContains(\"Add note\")")){
+//                    driver.findElement(By.name("OK")).click();
+//                }
+//            }
+//
+//            @Override
+//            public void afterClickOn(WebElement element, WebDriver driver) {
+//
+//            }
+//
+//            @Override
+//            public void beforeChangeValueOf(WebElement element, WebDriver driver) {
+//
+//            }
+//
+//            @Override
+//            public void beforeChangeValueOf(WebElement element, WebDriver driver, CharSequence[] keysToSend) {
+//
+//            }
+//
+//            @Override
+//            public void afterChangeValueOf(WebElement element, WebDriver driver) {
+//
+//            }
+//
+//            @Override
+//            public void afterChangeValueOf(WebElement element, WebDriver driver, CharSequence[] keysToSend) {
+//
+//            }
+//        });
+//    }
 
 
     public void setdriver(AndroidDevice driver){
@@ -89,13 +94,22 @@ public class BaseTestCase {
 //    }
 
 
-    public boolean isElementExist(By Locator) {
+    public static boolean isElementExist(By Locator) {
         try {
             driver.findElement(Locator);
             return true;
         } catch (org.openqa.selenium.NoSuchElementException ex) {
             return false;
         }
+    }
+    public static boolean isElementExist(String uiautomator){
+        try {
+            driver.findElementByAndroidUIAutomator(uiautomator);
+            return true;
+        } catch (org.openqa.selenium.NoSuchElementException ex) {
+            return false;
+        }
+
     }
     public void exsitClick(By element){
         if (isElementExist(element)){

@@ -4,10 +4,17 @@ import io.appium.java_client.TouchAction;
 
 
 import io.appium.java_client.android.AndroidKeyCode;
+import io.appium.java_client.events.EventFiringWebDriverFactory;
+import listener.AppiumListener;
+import listener.ElementEventListener;
+
+
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
@@ -40,6 +47,7 @@ public class AppTest extends BaseTestCase{
         List<WebElement> elements;
         HashMap<String,By> map;
         public Logger logger = LoggerFactory.getLogger(AppTest.class);
+        EventFiringWebDriver eventDriver;
 
 
 
@@ -49,7 +57,7 @@ public class AppTest extends BaseTestCase{
         File classpathRoot = new File(System.getProperty("user.dir"));
         File appDir = new File(classpathRoot, "apps");
         File app = new File(appDir, "2018launcher_v5.apk");
-
+        ElementEventListener elementEventListener=new  ElementEventListener();
         //设置自动化相关参数
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability(CapabilityType.SUPPORTS_LOCATION_CONTEXT, "");
@@ -74,13 +82,18 @@ public class AppTest extends BaseTestCase{
 //        capabilities.setCapability("resetKeyboard", "True");
         //初始化 需要setDriver,否则会空指针异常
         driver = new AndroidDevice(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
-        setupLisetenr();
+
         action=new TouchAction(driver);
         driver.context("NATIVE_APP");
         setdriver(driver);
         elements=new LinkedList();
         map=new LinkedHashMap<String,By>();
 
+
+        WebDriver.Navigation navigate = driver.navigate();
+        eventDriver=new EventFiringWebDriver(driver);
+        eventDriver.register(new AppiumListener());
+//        setupLisetenr();
 //        driver.registerWatcher("uiWatcher",new PermissionWatcher(driver));
 //        driver.runWatchers();
 
@@ -242,6 +255,7 @@ public class AppTest extends BaseTestCase{
         element=driver.findElement(By.className("android.view.ViewGroup"));
         driver.slide(elements.get(0),element);
         sleep(1000);
+
     }
 
 
