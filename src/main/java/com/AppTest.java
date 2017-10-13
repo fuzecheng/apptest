@@ -267,6 +267,7 @@ public class AppTest extends BaseTestCase{
             sleep(5000);
             if (isElementExist(By.id("com.example.android.apis:id/appwidget_text"))){
                 assertTrue(true);
+
             }else {
                 assertTrue("===Can not find widget===",false);
             }
@@ -282,6 +283,12 @@ public class AppTest extends BaseTestCase{
     @Test
     public void testChangeTheme() throws InterruptedException, IOException {
         driver.pressKeyCode(AndroidKeyCode.HOME);
+        try {
+            removeWidget("com.example.android.apis:id/appwidget_text");
+        }catch (org.openqa.selenium.UnsupportedCommandException e){
+            logger.info("====no=== widget");
+        }
+        sleep(2000);
         longClick("com.tct.launcher:id/all_app_blur_view");
         if (isElementExist(By.id("com.tct.launcher:id/theme_button"))){
             driver.findElement(By.id("com.tct.launcher:id/theme_button")).click();
@@ -392,6 +399,11 @@ public class AppTest extends BaseTestCase{
 //        if (crashEntries.size() > 0) {
 //            logger.info("CRASH ENTRY DETECTED"+crashEntries.get(0).getMessage());
 //        }
+    }
+    public void removeWidget(String widget){
+        element=driver.findElementByAndroidUIAutomator("new UiSelector().textCotains(\"Remove\")");
+        WebElement webElement=driver.findElement(By.id(widget));
+        driver.slide(webElement,element);
     }
 
 

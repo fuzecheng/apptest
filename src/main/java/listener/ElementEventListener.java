@@ -18,11 +18,7 @@ public class ElementEventListener implements io.appium.java_client.events.api.ge
 
     @Override
     public void beforeClickOn(WebElement element, WebDriver driver) {
-        if (BaseTestCase.isElementExist(By.name("Allow"))){
-            driver.findElement(By.name("Allow")).click();
-        }else if (BaseTestCase.isElementExist("new UiSelector().textContains(\"Add note\")")){
-            driver.findElement(By.name("OK")).click();
-        }
+
     }
 
     @Override

@@ -96,7 +96,7 @@ public class BaseTestCase {
         File f2 = driver.getScreenshotAs(OutputType.FILE);
         FileUtils.copyFile(f2, new File("target/reports/screenshots/"+screen_shot_name+".png"));
         BufferedImage img2 = ScreenUtil.getImageFromFile(f2);
-        Boolean same =ScreenUtil.sameAs(img1, img2, 0.9);
+        Boolean same =ScreenUtil.sameAs(img1, img2, 0.98);
         return same ;
     }
 
