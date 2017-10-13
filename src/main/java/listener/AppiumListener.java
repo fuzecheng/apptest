@@ -6,6 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.Assert;
 import utils.AndroidDevice;
 import utils.BaseTestCase;
 
@@ -92,26 +93,51 @@ public class AppiumListener implements AppiumWebDriverEventListener {
 
     @Override
     public void beforeFindBy(By by, WebElement element, WebDriver driver) {
-        //System.out.println("beforeFindBy:"+by.toString());
-        if (by.toString().equals("By.name: OK")||BaseTestCase.isElementExist("new UiSelector().textContains(\"Unfortunately\")")){
-            logger.error("-------------crash--------------");
-            androidDevice.findElement(By.name("OK")).click();
+        while (true) {
 
+            if (BaseTestCase.isElementExist("new UiSelector().text(\"Allow\")")) {
+                logger.info("Allow click");
+                androidDevice.findElementByAndroidUIAutomator("new UiSelector().text(\"Allow\")").click();
+            }else if (BaseTestCase.isElementExist("new UiSelector().text(\"Always\")")&&
+                    BaseTestCase.isElementExist("new UiSelector().text(\"Joy Launcher\")") ){
+                androidDevice.findElementByAndroidUIAutomator("new UiSelector().text(\"Joy Launcher\")").click();
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                androidDevice.findElementByAndroidUIAutomator("new UiSelector().text(\"Always\")").click();
+                logger.info("Joy Launcher&&Always click");
+                break;
+            }else if (BaseTestCase.isElementExist("new UiSelector().text(\"Always\")")
+                    ){
+                androidDevice.findElementByAndroidUIAutomator("new UiSelector().text(\"Always\")").click();
+                logger.info("Joy Launcher&&Always click");
+                break;
+            }
+            else if (BaseTestCase.isElementExist("new UiSelector().textContains(\"Unfortunately\")")){
+                logger.error("-------------crash--------------");
+                androidDevice.findElementByAndroidUIAutomator("new UiSelector().text(\"OK\")").click();
+                Assert.assertTrue(false,"-------------crash--------------");
+                break;
+            }else{
+                break;
+            }
         }
-
     }
 
     @Override
     public void afterFindBy(By by, WebElement element, WebDriver driver) {
-      //  System.out.println("afterFindBy:"+by.toString());
-//        if (by.toString().equals("By.name: OK")){
-//            logger.info("崩溃");
-//        }
+        System.out.println("afterFindBy:"+by.toString());
+
+
     }
 
     @Override
     public void beforeClickOn(WebElement element, WebDriver driver) {
        // System.out.println("beforeClickOn:");
+
+
     }
 
     @Override

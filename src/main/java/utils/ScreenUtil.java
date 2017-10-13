@@ -1,5 +1,8 @@
 package utils;
 
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.OutputType;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -61,4 +64,14 @@ public class ScreenUtil {
         }
         return img;
     }
+
+    public static boolean compare(String define_name,String screen_shot_name){
+        File f1 = new File("queryimages/"+define_name+".png");
+        BufferedImage img1 = ScreenUtil.getImageFromFile(f1);
+        File f2 = new File("target/reports/screenshots/"+screen_shot_name+".png");
+        BufferedImage img2 = ScreenUtil.getImageFromFile(f2);
+        Boolean same =ScreenUtil.sameAs(img1, img2, 0.98);
+        return same ;
+    }
+
 }

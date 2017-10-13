@@ -1,10 +1,12 @@
 package com;
 
+import io.appium.java_client.MobileElement;
 import io.appium.java_client.TouchAction;
 
 
 import io.appium.java_client.android.AndroidKeyCode;
 import io.appium.java_client.events.EventFiringWebDriverFactory;
+import io.appium.java_client.functions.ExpectedCondition;
 import listener.AppiumListener;
 import listener.ElementEventListener;
 
@@ -15,6 +17,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
@@ -25,6 +28,7 @@ import utils.AndroidDevice;
 import utils.BaseTestCase;
 
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -69,33 +73,22 @@ public class AppTest extends BaseTestCase{
         capabilities.setCapability("platformVersion", "7.0");
         //设置apk路径
         capabilities.setCapability("app", app.getAbsolutePath());
-
-
-
         //设置app的主包名和主类名
         capabilities.setCapability("appPackage", "com.tct.launcher");
         capabilities.setCapability("appActivity", ".Launcher");
-
-
-
 //        capabilities.setCapability("unicodeKeyboard", "True");
 //        capabilities.setCapability("resetKeyboard", "True");
         //初始化 需要setDriver,否则会空指针异常
         driver = new AndroidDevice(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
-
         action=new TouchAction(driver);
         driver.context("NATIVE_APP");
         setdriver(driver);
         elements=new LinkedList();
         map=new LinkedHashMap<String,By>();
-
        driver=EventFiringWebDriverFactory.getEventFiringWebDriver(driver,new AppiumListener(driver));
-//
 //        WebDriver.Navigation navigate = driver.navigate();
 //        eventDriver=new EventFiringWebDriver(driver);
 //        eventDriver.register(new AppiumListener());
-
-
 
     }
 
@@ -113,10 +106,9 @@ public class AppTest extends BaseTestCase{
 //        driver.getKeyboard().sendKeys("");
 
         setupeliment=new LinkedList<>();
-        allow();
         setupeliment.add(By.name("GOT IT"));
         setupeliment.add(By.name("Joy Launcher"));
-        setupeliment.add(By.name("Always"));
+//        setupeliment.add(By.name("Always"));
         Iterator iterator=setupeliment.iterator();
         int flag=0;
         while (iterator.hasNext()){
@@ -132,7 +124,12 @@ public class AppTest extends BaseTestCase{
                 flag++;
                      }
              }
-
+        try {
+            driver.pressKeyCode(AndroidKeyCode.HOME);
+//            driver.findElement(By.name("Always"));
+        }catch (org.openqa.selenium.NoSuchElementException ex){
+            logger.info("====no always elemnet===");
+        }
 
     }
 
@@ -174,7 +171,7 @@ public class AppTest extends BaseTestCase{
         driver.pressKeyCode(AndroidKeyCode.HOME);
         sleep(1000);
         driver.swipeRight();
-        allow();
+//        allow();
         if (isElementExist(By.id("com.tcl.mie.launcher.lscreen:id/layPopWin"))){
             Assert.assertTrue(true);
         }else {
@@ -247,6 +244,11 @@ public class AppTest extends BaseTestCase{
         sleep(4000);
         assertTrue("Default paper is different",imgCompare("default_paper","default_paper"));
     }
+
+    /**
+     * 测试小部件
+     * @throws InterruptedException
+     */
     @Test
     public void testWidget() throws InterruptedException {
 
@@ -255,15 +257,76 @@ public class AppTest extends BaseTestCase{
             element = driver.findElement(By.className("android.view.ViewGroup"));
             driver.slide(elements.get(0), element);
             sleep(2000);
-//          driver.findElement(By.className("android.widget.CheckBox")).click();
-//          driver.findElement(By.name("Create")).click();
+            if (isElementExist(By.className("android.widget.CheckBox"))){
+                          driver.findElement(By.className("android.widget.CheckBox")).click();
+            }
+            if (isElementExist(By.name("Create"))){
+                          driver.findElement(By.name("Create")).click();
+            }
             driver.findElement(By.name("OK")).click();
             sleep(5000);
-            element = driver.findElement(By.className("android.view.ViewGroup"));
+            if (isElementExist(By.id("com.example.android.apis:id/appwidget_text"))){
+                assertTrue(true);
+            }else {
+                assertTrue("===Can not find widget===",false);
+            }
+            driver.pressKeyCode(AndroidKeyCode.HOME);
+
 
     }
 
+    /**
+     * 测试主题替换
+     * @throws InterruptedException
+     */
+    @Test
+    public void testChangeTheme() throws InterruptedException, IOException {
+        driver.pressKeyCode(AndroidKeyCode.HOME);
+        longClick("com.tct.launcher:id/all_app_blur_view");
+        if (isElementExist(By.id("com.tct.launcher:id/theme_button"))){
+            driver.findElement(By.id("com.tct.launcher:id/theme_button")).click();
+            sleep(3000);
+            element = (new WebDriverWait(driver, 60))
+                    .until(new ExpectedCondition<MobileElement>() {
+                        @Override
+                        public MobileElement apply(WebDriver d) {
+                            int width = driver.manage().window().getSize().width;
+                            int height = driver.manage().window().getSize().height;
+                            driver.swipe(width / 2, height * 9/20, width /2 , height/20, 500);
+                            System.out.println("scroll=======" + height * 3/ 4 + " " + height /8);
 
+                            WebElement mushroom =  driver.findElement(By
+                                    .name("Mushroom Forest"));
+                            return (MobileElement) mushroom;
+                        }
+                    });
+            element.click();
+            sleep(5000);
+            driver.findElement(By.name("Download")).click();
+            element=(new WebDriverWait(driver,30)).until(new ExpectedCondition<WebElement>() {
+                @Override
+                public WebElement apply( WebDriver input) {
+                    if (isElementExist(By.name("Paused"))){
+                     driver.findElement(By.name("Paused")).click();
+                    }
+                    WebElement apply =driver.findElement(By.name("Apply"));
+                    return apply;
+                }
+            });
+            element.click();
+            sleep(10000);
+            driver.pressKeyCode(AndroidKeyCode.HOME);
+            if (isElementExist(By.id("com.tct.launcher:id/workspace"))){
+                assertTrue(imgCompare("theme","theme"));
+            }else {
+                assertTrue("-------Not BACK-----",false);
+            }
+        }else {
+            assertTrue("-------Not installed ThemeStore-----",false);
+        }
+
+
+    }
     /**
      * 操作-1屏开关按钮
      * @throws InterruptedException
@@ -283,12 +346,17 @@ public class AppTest extends BaseTestCase{
 
     
     @AfterTest
-    public void tearDown(){
+    public void tearDown() throws IOException {
+        Runtime.getRuntime().exec("adb shell pm clear com.tcl.hawk.ts" );
         driver.removeApp("com.tct.launcher");
         driver.quit();
 
     }
 
+
+    /**
+     * 废弃
+     */
     public void allow(){
         while(isElementExist(By.name("Allow"))){
             driver.findElement(By.name("Allow")).click();
@@ -310,6 +378,10 @@ public class AppTest extends BaseTestCase{
         element.click();
 
     }
+
+    /**
+     * 进入小部件
+     */
     public void loginWidget(){
         driver.pressKeyCode(AndroidKeyCode.HOME);
         longClick("com.tct.launcher:id/all_app_blur_view");
@@ -321,6 +393,7 @@ public class AppTest extends BaseTestCase{
 //            logger.info("CRASH ENTRY DETECTED"+crashEntries.get(0).getMessage());
 //        }
     }
+
 
 
 }
