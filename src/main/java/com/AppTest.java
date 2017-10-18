@@ -26,9 +26,11 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import utils.AndroidDevice;
 import utils.BaseTestCase;
+import utils.MailUtils;
 
 
 import javax.annotation.Nullable;
+import javax.mail.MessagingException;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -347,11 +349,11 @@ public class AppTest extends BaseTestCase{
 
     
     @AfterTest
-    public void tearDown() throws IOException {
+    public void tearDown() throws IOException, MessagingException {
         Runtime.getRuntime().exec("adb shell pm clear com.tcl.hawk.ts" );
         driver.removeApp("com.tct.launcher");
         driver.quit();
-
+        MailUtils.sendMail();
     }
 
 

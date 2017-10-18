@@ -1,6 +1,9 @@
 package utils;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
@@ -12,7 +15,8 @@ import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 
 public class MailUtils {
-    public static void main(String[] args) throws MessagingException, UnsupportedEncodingException {
+    private  static Logger  logger = LoggerFactory.getLogger(MailUtils.class);
+    public static void sendMail() throws MessagingException, UnsupportedEncodingException {
         String to[] = { "xxxx.com" };
         // 配置发送邮件的环境属性
         Properties props = new Properties();
@@ -65,7 +69,7 @@ public class MailUtils {
 
 // 设置邮件标题
         message.setSubject("Web Auto Test Mail");
-       /// message.setContent(GenerateHtml.readSuitsXml(), "text/html;charset=UTF-8");
+        /// message.setContent(GenerateHtml.readSuitsXml(), "text/html;charset=UTF-8");
 //        MimeBodyPart attch2 = new MimeBodyPart();
 //        DataSource ds2 = new FileDataSource(new File(System.getProperty("user.dir")+"\\"+"test-output"+"\\"+"Extent.html"));
 //        DataHandler dh2 = new DataHandler(ds2 );
@@ -74,7 +78,7 @@ public class MailUtils {
 
         Multipart multipart=new MimeMultipart();
         BodyPart localFilePart = new MimeBodyPart();
-        localFilePart.setFileName(MimeUtility.encodeText("测试报告.html"));  //设置本地附件名称
+        localFilePart.setFileName(MimeUtility.encodeText("TestCaseReport.html"));  //设置本地附件名称
         DataSource localDs = new FileDataSource(new File(System.getProperty("user.dir")+"\\"+"test-output"+"\\"+"Extent.html"));
         DataHandler localDh = new DataHandler(localDs);
         localFilePart.setDataHandler(localDh); //设置本地附件资源
@@ -83,7 +87,15 @@ public class MailUtils {
         message.setContent(multipart);
 // 发送邮件
         Transport.send(message);
-        System.out.println("成功发送邮件");
+        logger.info("====================sendMail Success=========================");
+
+
+
+
+    }
+
+    public static void main(String[] args) throws MessagingException, UnsupportedEncodingException {
+
     }
 
 //    public String readReport(){

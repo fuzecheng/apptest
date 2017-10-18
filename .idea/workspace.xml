@@ -1,21 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/src/main/java/com/AppTest.java" line="274" />
+    <bookmark url="file://$PROJECT_DIR$/src/main/java/com/AppTest.java" line="276" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="274ea1c8-a9bd-4e08-9622-7bac7d4e35c6" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/utils/MailUtils.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/queryimages/theme.png" afterPath="$PROJECT_DIR$/queryimages/theme.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/AppTest.class" afterPath="$PROJECT_DIR$/target/classes/com/AppTest.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/apptest.iml" afterPath="$PROJECT_DIR$/apptest.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/AppTest.java" afterPath="$PROJECT_DIR$/src/main/java/com/AppTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/interfaceUtil/UiWatcher.java" afterPath="$PROJECT_DIR$/src/main/java/interfaceUtil/UiWatcher.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/utils/BaseTestCase.java" afterPath="$PROJECT_DIR$/src/main/java/utils/BaseTestCase.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/utils/TestdroidImageRecognition.java" afterPath="$PROJECT_DIR$/src/main/java/utils/TestdroidImageRecognition.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/watcher/Test.java" afterPath="$PROJECT_DIR$/src/main/java/watcher/Test.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/utils/MailUtils.java" afterPath="$PROJECT_DIR$/src/main/java/utils/MailUtils.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/testng.xml" afterPath="$PROJECT_DIR$/testng.xml" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -32,11 +25,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="AppTest.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="AppTest.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/AppTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="6389">
-              <caret line="329" column="5" lean-forward="false" selection-start-line="329" selection-start-column="5" selection-end-line="329" selection-end-column="5" />
+            <state relative-caret-position="289">
+              <caret line="332" column="7" lean-forward="true" selection-start-line="332" selection-start-column="7" selection-end-line="332" selection-end-column="7" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -57,22 +50,32 @@
       <file leaf-file-name="MailUtils.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/utils/MailUtils.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="236">
-              <caret line="44" column="0" lean-forward="false" selection-start-line="44" selection-start-column="0" selection-end-line="44" selection-end-column="0" />
+            <state relative-caret-position="268">
+              <caret line="89" column="82" lean-forward="false" selection-start-line="89" selection-start-column="82" selection-end-line="89" selection-end-column="82" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#1127#1502#0" expanded="true" />
-                <element signature="e#1501#1502#0" expanded="true" />
+                <element signature="e#1255#1630#0" expanded="true" />
+                <element signature="e#1629#1630#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="pom.xml" pinned="false" current-in-tab="true">
+      <file leaf-file-name="pom.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="688">
-              <caret line="119" column="34" lean-forward="true" selection-start-line="119" selection-start-column="34" selection-end-line="119" selection-end-column="34" />
+            <state relative-caret-position="735">
+              <caret line="41" column="21" lean-forward="false" selection-start-line="41" selection-start-column="21" selection-end-line="41" selection-end-column="21" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ScreenUtil.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/utils/ScreenUtil.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="441">
+              <caret line="69" column="51" lean-forward="true" selection-start-line="69" selection-start-column="51" selection-end-line="69" selection-end-column="51" />
               <folding />
             </state>
           </provider>
@@ -81,18 +84,8 @@
       <file leaf-file-name="TestdroidImageRecognition.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/utils/TestdroidImageRecognition.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="21">
+            <state relative-caret-position="588">
               <caret line="46" column="60" lean-forward="false" selection-start-line="46" selection-start-column="33" selection-end-line="46" selection-end-column="60" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ExtentReporterNGListener.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/utils/ExtentReporterNGListener.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="168">
-              <caret line="17" column="55" lean-forward="false" selection-start-line="17" selection-start-column="46" selection-end-line="17" selection-end-column="55" />
               <folding />
             </state>
           </provider>
@@ -123,8 +116,8 @@
       <file leaf-file-name="testng.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/testng.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="504">
-              <caret line="24" column="23" lean-forward="false" selection-start-line="24" selection-start-column="23" selection-end-line="24" selection-end-column="23" />
+            <state relative-caret-position="273">
+              <caret line="13" column="60" lean-forward="false" selection-start-line="9" selection-start-column="14" selection-end-line="14" selection-end-column="57" />
               <folding />
             </state>
           </provider>
@@ -133,9 +126,19 @@
       <file leaf-file-name="Extent.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test-output/Extent.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1447">
-              <caret line="411" column="54" lean-forward="false" selection-start-line="411" selection-start-column="54" selection-end-line="411" selection-end-column="54" />
-              <folding />
+            <state relative-caret-position="-1094">
+              <caret line="290" column="54" lean-forward="false" selection-start-line="290" selection-start-column="54" selection-end-line="290" selection-end-column="54" />
+              <folding>
+                <marker date="1508295399948" expanded="true" signature="14569:14667" ph="..." />
+                <marker date="1508295399948" expanded="true" signature="14792:15577" ph="..." />
+                <marker date="1508295399948" expanded="true" signature="14824:15436" ph="..." />
+                <marker date="1508295399948" expanded="true" signature="15467:15567" ph="..." />
+                <marker date="1508295399948" expanded="true" signature="15715:17183" ph="..." />
+                <marker date="1508295399948" expanded="true" signature="15747:17043" ph="..." />
+                <marker date="1508295399948" expanded="true" signature="17073:17173" ph="..." />
+                <marker date="1508295399948" expanded="true" signature="17479:17619" ph="..." />
+                <marker date="1508295399948" expanded="true" signature="17544:17584" ph="{...}" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -212,12 +215,12 @@
         <option value="$PROJECT_DIR$/src/main/java/listener/ElementEventListener.java" />
         <option value="$PROJECT_DIR$/src/main/java/utils/BaseTestCase.java" />
         <option value="$PROJECT_DIR$/test-output/Extent.html" />
-        <option value="$PROJECT_DIR$/src/main/java/com/AppTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/utils/ExtentReporterNGListener.java" />
         <option value="$PROJECT_DIR$/src/main/java/watcher/Test.java" />
         <option value="$PROJECT_DIR$/testng.xml" />
-        <option value="$PROJECT_DIR$/src/main/java/utils/MailUtils.java" />
         <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/com/AppTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/utils/MailUtils.java" />
       </list>
     </option>
   </component>
@@ -341,6 +344,13 @@
             </path>
             <path>
               <item name="apptest" type="b2602c69:ProjectViewProjectNode" />
+              <item name="apptest" type="462c0819:PsiDirectoryNode" />
+              <item name="target" type="462c0819:PsiDirectoryNode" />
+              <item name="reports" type="462c0819:PsiDirectoryNode" />
+              <item name="screenshots" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="apptest" type="b2602c69:ProjectViewProjectNode" />
               <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
             </path>
           </expand>
@@ -359,7 +369,7 @@
     <property name="js.eslint.eslintPackage" value="" />
     <property name="js-jscs-nodeInterpreter" value="C:\Program Files\nodejs\node.exe" />
     <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file://F:/apptest/pom.xml" />
-    <property name="settings.editor.selected.configurable" value="vcs.Subversion.Presentation" />
+    <property name="settings.editor.selected.configurable" value="vcs.Git" />
     <property name="last_opened_file_path" value="D:/workspace/apptest" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
     <property name="add_unversioned_files" value="$PROJECT_DIR$/test-output/Extent.html&#10;D:/work/apptest/test-output/html/index.html&#10;D:/work/apptest/.gitignore" />
@@ -391,7 +401,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.MailUtils">
+  <component name="RunManager" selected="TestNG.D:/work/apptest/testng.xml">
     <configuration name="AppTest" type="TestNG" factoryName="TestNG" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <module name="apptest" />
@@ -926,8 +936,8 @@
     </list>
     <recent_temporary>
       <list size="3">
-        <item index="0" class="java.lang.String" itemvalue="Application.MailUtils" />
-        <item index="1" class="java.lang.String" itemvalue="TestNG.D:/work/apptest/testng.xml" />
+        <item index="0" class="java.lang.String" itemvalue="TestNG.D:/work/apptest/testng.xml" />
+        <item index="1" class="java.lang.String" itemvalue="Application.MailUtils" />
         <item index="2" class="java.lang.String" itemvalue="Application.Test" />
       </list>
     </recent_temporary>
@@ -971,7 +981,7 @@
       <workItem from="1507693238900" duration="13839000" />
       <workItem from="1507772721933" duration="39884000" />
       <workItem from="1507883710910" duration="2456000" />
-      <workItem from="1508118568229" duration="36022000" />
+      <workItem from="1508118568229" duration="38484000" />
     </task>
     <task id="LOCAL-00001" summary="1.0">
       <created>1506678005795</created>
@@ -1064,16 +1074,17 @@
       <option name="project" value="LOCAL" />
       <updated>1507891162427</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="2.0">
+      <created>1508292011546</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1508292011546</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="D__work_apptest_testng_xml - 2017.10.16 at 18h 26m 16s.xml">
-      <configuration name="D:/work/apptest/testng.xml" configurationId="TestNG" />
-    </history-entry>
-    <history-entry file="D__work_apptest_testng_xml - 2017.10.17 at 10h 36m 12s.xml">
-      <configuration name="D:/work/apptest/testng.xml" configurationId="TestNG" />
-    </history-entry>
     <history-entry file="D__work_apptest_testng_xml - 2017.10.17 at 10h 38m 40s.xml">
       <configuration name="D:/work/apptest/testng.xml" configurationId="TestNG" />
     </history-entry>
@@ -1098,9 +1109,15 @@
     <history-entry file="D__work_apptest_testng_xml - 2017.10.18 at 09h 55m 51s.xml">
       <configuration name="D:/work/apptest/testng.xml" configurationId="TestNG" />
     </history-entry>
+    <history-entry file="D__work_apptest_testng_xml - 2017.10.18 at 10h 50m 22s.xml">
+      <configuration name="D:/work/apptest/testng.xml" configurationId="TestNG" />
+    </history-entry>
+    <history-entry file="D__work_apptest_testng_xml - 2017.10.18 at 10h 56m 40s.xml">
+      <configuration name="D:/work/apptest/testng.xml" configurationId="TestNG" />
+    </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="264082000" />
+    <option name="totallyTimeSpent" value="266544000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1176" extended-state="6" />
@@ -1387,14 +1404,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/utils/ScreenUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1386">
-          <caret line="72" column="56" lean-forward="false" selection-start-line="72" selection-start-column="52" selection-end-line="72" selection-end-column="56" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/queryimages/theme.png">
       <provider selected="true" editor-type-id="images">
         <state />
@@ -1479,19 +1488,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/utils/TestdroidImageRecognition.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="21">
-          <caret line="46" column="60" lean-forward="false" selection-start-line="46" selection-start-column="33" selection-end-line="46" selection-end-column="60" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/test-output/Extent.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1447">
-          <caret line="411" column="54" lean-forward="false" selection-start-line="411" selection-start-column="54" selection-end-line="411" selection-end-column="54" />
-          <folding />
+        <state relative-caret-position="-1094">
+          <caret line="290" column="54" lean-forward="false" selection-start-line="290" selection-start-column="54" selection-end-line="290" selection-end-column="54" />
+          <folding>
+            <marker date="1508295399948" expanded="true" signature="14569:14667" ph="..." />
+            <marker date="1508295399948" expanded="true" signature="14792:15577" ph="..." />
+            <marker date="1508295399948" expanded="true" signature="14824:15436" ph="..." />
+            <marker date="1508295399948" expanded="true" signature="15467:15567" ph="..." />
+            <marker date="1508295399948" expanded="true" signature="15715:17183" ph="..." />
+            <marker date="1508295399948" expanded="true" signature="15747:17043" ph="..." />
+            <marker date="1508295399948" expanded="true" signature="17073:17173" ph="..." />
+            <marker date="1508295399948" expanded="true" signature="17479:17619" ph="..." />
+            <marker date="1508295399948" expanded="true" signature="17544:17584" ph="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1513,16 +1524,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/AppTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6389">
-          <caret line="329" column="5" lean-forward="false" selection-start-line="329" selection-start-column="5" selection-end-line="329" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/watcher/Test.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="231">
@@ -1533,29 +1534,55 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/testng.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="504">
-          <caret line="24" column="23" lean-forward="false" selection-start-line="24" selection-start-column="23" selection-end-line="24" selection-end-column="23" />
+        <state relative-caret-position="273">
+          <caret line="13" column="60" lean-forward="false" selection-start-line="9" selection-start-column="14" selection-end-line="14" selection-end-column="57" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="735">
+          <caret line="41" column="21" lean-forward="false" selection-start-line="41" selection-start-column="21" selection-end-line="41" selection-end-column="21" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/utils/MailUtils.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="236">
-          <caret line="44" column="0" lean-forward="false" selection-start-line="44" selection-start-column="0" selection-end-line="44" selection-end-column="0" />
+        <state relative-caret-position="268">
+          <caret line="89" column="82" lean-forward="false" selection-start-line="89" selection-start-column="82" selection-end-line="89" selection-end-column="82" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1127#1502#0" expanded="true" />
-            <element signature="e#1501#1502#0" expanded="true" />
+            <element signature="e#1255#1630#0" expanded="true" />
+            <element signature="e#1629#1630#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
+    <entry file="file://$PROJECT_DIR$/src/main/java/utils/TestdroidImageRecognition.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="688">
-          <caret line="119" column="34" lean-forward="true" selection-start-line="119" selection-start-column="34" selection-end-line="119" selection-end-column="34" />
+        <state relative-caret-position="588">
+          <caret line="46" column="60" lean-forward="false" selection-start-line="46" selection-start-column="33" selection-end-line="46" selection-end-column="60" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/utils/ScreenUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="441">
+          <caret line="69" column="51" lean-forward="true" selection-start-line="69" selection-start-column="51" selection-end-line="69" selection-end-column="51" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/AppTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="332" column="7" lean-forward="true" selection-start-line="332" selection-start-column="7" selection-end-line="332" selection-end-column="7" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

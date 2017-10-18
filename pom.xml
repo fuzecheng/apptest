@@ -17,11 +17,37 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
+
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.1.1</version>
+                <executions>
+                    <execution>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                        <configuration>
+                            <includePluginDependencies>true</includePluginDependencies>
+                            <mainClass>utils.MailUtils</mainClass>
+                            <!--<arguments>-->
+                                <!--<argument>11</argument>-->
+                                <!--<argument>22</argument>-->
+                            <!--</arguments>-->
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
       </properties>
+
+
+
     <!-- https://mvnrepository.com/artifact/io.appium/java-client -->
     <dependencies>
         <!-- https://mvnrepository.com/artifact/io.appium/java-client -->
