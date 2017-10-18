@@ -20,7 +20,7 @@ public class BaseTestCase {
 
 
     public void setdriver(AndroidDevice driver){
-        this.driver=driver;
+        BaseTestCase.driver =driver;
     }
 
     public void takescreen(String filename){

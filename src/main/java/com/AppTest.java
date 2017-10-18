@@ -33,6 +33,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.Duration;
 import java.util.*;
 
 
@@ -70,7 +71,7 @@ public class AppTest extends BaseTestCase{
         capabilities.setCapability("deviceName", "192.168.185.101:5555");
         capabilities.setCapability("noReset","true");
         //设置安卓系统版本 5.1.1
-        capabilities.setCapability("platformVersion", "7.0");
+        capabilities.setCapability("platformVersion", "6.0");
         //设置apk路径
         capabilities.setCapability("app", app.getAbsolutePath());
         //设置app的主包名和主类名
@@ -255,7 +256,7 @@ public class AppTest extends BaseTestCase{
             loginWidget();
             elements = driver.findElements(By.id("com.tct.launcher:id/widget_preview"));
             element = driver.findElement(By.className("android.view.ViewGroup"));
-            driver.slide(elements.get(0), element);
+            driver.slide(elements.get(1), element);
             sleep(2000);
             if (isElementExist(By.className("android.widget.CheckBox"))){
                           driver.findElement(By.className("android.widget.CheckBox")).click();
@@ -263,17 +264,16 @@ public class AppTest extends BaseTestCase{
             if (isElementExist(By.name("Create"))){
                           driver.findElement(By.name("Create")).click();
             }
-            driver.findElement(By.name("OK")).click();
+//            driver.findElement(By.name("OK")).click();
             sleep(5000);
-            if (isElementExist(By.id("com.example.android.apis:id/appwidget_text"))){
+
+            if (isElementExist(By.name("Sample"))){
+                removeWidget("Sample");
                 assertTrue(true);
 
             }else {
                 assertTrue("===Can not find widget===",false);
             }
-            driver.pressKeyCode(AndroidKeyCode.HOME);
-
-
     }
 
     /**
@@ -283,11 +283,6 @@ public class AppTest extends BaseTestCase{
     @Test
     public void testChangeTheme() throws InterruptedException, IOException {
         driver.pressKeyCode(AndroidKeyCode.HOME);
-        try {
-            removeWidget("com.example.android.apis:id/appwidget_text");
-        }catch (org.openqa.selenium.UnsupportedCommandException e){
-            logger.info("====no=== widget");
-        }
         sleep(2000);
         longClick("com.tct.launcher:id/all_app_blur_view");
         if (isElementExist(By.id("com.tct.launcher:id/theme_button"))){
@@ -301,7 +296,6 @@ public class AppTest extends BaseTestCase{
                             int height = driver.manage().window().getSize().height;
                             driver.swipe(width / 2, height * 9/20, width /2 , height/20, 500);
                             System.out.println("scroll=======" + height * 3/ 4 + " " + height /8);
-
                             WebElement mushroom =  driver.findElement(By
                                     .name("Mushroom Forest"));
                             return (MobileElement) mushroom;
@@ -400,10 +394,15 @@ public class AppTest extends BaseTestCase{
 //            logger.info("CRASH ENTRY DETECTED"+crashEntries.get(0).getMessage());
 //        }
     }
+
+    /**
+     * 删除小部件
+     * @param widget
+     */
     public void removeWidget(String widget){
-        element=driver.findElementByAndroidUIAutomator("new UiSelector().textCotains(\"Remove\")");
-        WebElement webElement=driver.findElement(By.id(widget));
-        driver.slide(webElement,element);
+        element=driver.findElement(By.name(widget));
+        action.longPress(element).perform().moveTo(driver.findElementByAndroidUIAutomator("new UiSelector().textContains(\"Remove\")")).release().perform();
+        driver.pressKeyCode(AndroidKeyCode.HOME);
     }
 
 

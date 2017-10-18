@@ -41,7 +41,7 @@ public class TestdroidImageRecognition  {
     public TestdroidImageRecognition(AppiumDriver driver){
 
         super();
-        this.driver=driver;
+        TestdroidImageRecognition.driver =driver;
         screenshotsFolder = System.getenv("SCREENSHOT_FOLDER");
         if (screenshotsFolder == null || screenshotsFolder.isEmpty()) {
             screenshotsFolder = "target/reports/screenshots/";
@@ -293,9 +293,7 @@ public class TestdroidImageRecognition  {
     // Returns true if Image was found, false if the image was not found
     public boolean tapAndHoldImageOnScreen(String imageName, double x_offset, double y_offset, int duration, ImageRecognitionSettings settings, boolean with_assert) throws Exception {
         ImageSearchResult foundImage = findImageOnScreen(imageName, settings);
-        if (with_assert){
-            assert(foundImage.isFound());
-        }
+        assert !with_assert || (foundImage.isFound());
         if (foundImage.isFound() == false ) {
             return false;
         }
