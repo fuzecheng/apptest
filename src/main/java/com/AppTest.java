@@ -244,6 +244,7 @@ public class AppTest extends BaseTestCase{
         elements.get(1).click();
         element=driver.findElement(By.id("com.tct.launcher:id/set_wallpaper_button"));
         element.click();
+
         sleep(4000);
         assertTrue("Default paper is different",imgCompare("default_paper","default_paper"));
     }
@@ -297,7 +298,7 @@ public class AppTest extends BaseTestCase{
                             int width = driver.manage().window().getSize().width;
                             int height = driver.manage().window().getSize().height;
                             driver.swipe(width / 2, height * 9/20, width /2 , height/20, 500);
-                            System.out.println("scroll=======" + height * 3/ 4 + " " + height /8);
+                            logger.info("scroll=======" + height * 3/ 4 + " " + height /8);
                             WebElement mushroom =  driver.findElement(By
                                     .name("Mushroom Forest"));
                             return (MobileElement) mushroom;
@@ -406,7 +407,5 @@ public class AppTest extends BaseTestCase{
         action.longPress(element).perform().moveTo(driver.findElementByAndroidUIAutomator("new UiSelector().textContains(\"Remove\")")).release().perform();
         driver.pressKeyCode(AndroidKeyCode.HOME);
     }
-
-
 
 }

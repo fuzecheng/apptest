@@ -93,12 +93,17 @@ public class AppiumListener implements AppiumWebDriverEventListener {
 
     @Override
     public void beforeFindBy(By by, WebElement element, WebDriver driver) {
-        while (true) {
 
+        while (true) {
             if (BaseTestCase.isElementExist("new UiSelector().text(\"Allow\")")) {
                 logger.info("Allow click");
                 androidDevice.findElementByAndroidUIAutomator("new UiSelector().text(\"Allow\")").click();
             }else if (BaseTestCase.isElementExist("new UiSelector().text(\"Always\")")&&
+                    (BaseTestCase.isElementExist("new UiSelector().text(\"Use Joy Launcher as Home\")"))){
+                androidDevice.findElementByAndroidUIAutomator("new UiSelector().text(\"Always\")").click();
+                logger.info("Always click");
+                break;
+            } else if (BaseTestCase.isElementExist("new UiSelector().text(\"Always\")")&&
                     BaseTestCase.isElementExist("new UiSelector().text(\"Joy Launcher\")") ){
                 androidDevice.findElementByAndroidUIAutomator("new UiSelector().text(\"Joy Launcher\")").click();
                 try {
@@ -106,11 +111,6 @@ public class AppiumListener implements AppiumWebDriverEventListener {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                androidDevice.findElementByAndroidUIAutomator("new UiSelector().text(\"Always\")").click();
-                logger.info("Joy Launcher&&Always click");
-                break;
-            }else if (BaseTestCase.isElementExist("new UiSelector().text(\"Always\")")
-                    ){
                 androidDevice.findElementByAndroidUIAutomator("new UiSelector().text(\"Always\")").click();
                 logger.info("Joy Launcher&&Always click");
                 break;
