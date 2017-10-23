@@ -15,9 +15,10 @@ import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 
 public class MailUtils {
-    private  static Logger  logger = LoggerFactory.getLogger(MailUtils.class);
+    private static Logger logger = LoggerFactory.getLogger(MailUtils.class);
+
     public static void sendMail() throws MessagingException, UnsupportedEncodingException {
-        String to[] = { "xxxx.com" };
+        String to[] = {"xxxx.com"};
         // 配置发送邮件的环境属性
         Properties props = new Properties();
 /*
@@ -76,10 +77,10 @@ public class MailUtils {
 //        attch2.setDataHandler(dh2);
 //        attch2.setFileName(MimeUtility.encodeText( "Extent.html"));
 
-        Multipart multipart=new MimeMultipart();
+        Multipart multipart = new MimeMultipart();
         BodyPart localFilePart = new MimeBodyPart();
         localFilePart.setFileName(MimeUtility.encodeText("TestCaseReport.html"));  //设置本地附件名称
-        DataSource localDs = new FileDataSource(new File(System.getProperty("user.dir")+"\\"+"test-output"+"\\"+"Extent.html"));
+        DataSource localDs = new FileDataSource(new File(System.getProperty("user.dir") + "\\" + "test-output" + "\\" + "Extent.html"));
         DataHandler localDh = new DataHandler(localDs);
         localFilePart.setDataHandler(localDh); //设置本地附件资源
         multipart.addBodyPart(localFilePart);
@@ -88,8 +89,6 @@ public class MailUtils {
 // 发送邮件
         Transport.send(message);
         logger.info("====================sendMail Success=========================");
-
-
 
 
     }

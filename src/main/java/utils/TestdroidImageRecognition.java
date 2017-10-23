@@ -23,7 +23,7 @@ import java.io.*;
 /**
  * Created by testdroid on 22/07/16.
  */
-public class TestdroidImageRecognition  {
+public class TestdroidImageRecognition {
 
     public Logger logger = LoggerFactory.getLogger(TestdroidImageRecognition.class);
     String screenshotsFolder;
@@ -34,14 +34,15 @@ public class TestdroidImageRecognition  {
     public static int defaultWaitTime = 60;
 
     public static File userDir = new File(System.getProperty("user.dir"));
-    public static PlatformType platform= PlatformType.ANDROID;
+    public static PlatformType platform = PlatformType.ANDROID;
     public static String automationName = System.getenv("AUTOMATION_NAME");
 
     public static String udid = System.getenv("UDID");
-    public TestdroidImageRecognition(AppiumDriver driver){
+
+    public TestdroidImageRecognition(AppiumDriver driver) {
 
         super();
-        TestdroidImageRecognition.driver =driver;
+        TestdroidImageRecognition.driver = driver;
         screenshotsFolder = System.getenv("SCREENSHOT_FOLDER");
         if (screenshotsFolder == null || screenshotsFolder.isEmpty()) {
             screenshotsFolder = "target/reports/screenshots/";
@@ -82,23 +83,24 @@ public class TestdroidImageRecognition  {
     public void tapAtCoordinates(int x, int y) throws Exception {
         if (automationName.equalsIgnoreCase("selendroid")) {
             selendroidTapAtCoordinate(x, y, 1);
-        } else if (platform.equals(PlatformType.ANDROID)){
+        } else if (platform.equals(PlatformType.ANDROID)) {
             Dimension size = driver.manage().window().getSize();
-        	if(y > size.getHeight() || x > size.getWidth()){
-    			try{
+            if (y > size.getHeight() || x > size.getWidth()) {
+                try {
                     //run eclipse from commandline to get path variable correct and find adb
-            		Process p = Runtime.getRuntime().exec("adb -s " + udid + " shell input tap " + x + " " + y);
-            		p.waitFor();
-    			} catch (Exception e) {
+                    Process p = Runtime.getRuntime().exec("adb -s " + udid + " shell input tap " + x + " " + y);
+                    p.waitFor();
+                } catch (Exception e) {
 
-    			}
-        	} else {
-        		new TouchAction(driver).tap(x,y);
-        	}
+                }
+            } else {
+                new TouchAction(driver).tap(x, y);
+            }
         } else {
-            new TouchAction(driver).tap(x,y);
+            new TouchAction(driver).tap(x, y);
         }
     }
+
     public static void sleep(double seconds) throws Exception {
 
         seconds = seconds * 1000;
@@ -151,18 +153,18 @@ public class TestdroidImageRecognition  {
         ImageRecognitionSettings defaultSettings = new ImageRecognitionSettings();
         return findImageOnScreen(image, defaultSettings);
     }
-    
+
     public ImageSearchResult findImageOnScreen(String imageName, ImageRecognitionSettings settings) throws Exception {
-        String imageFile = queryImageFolder+imageName;
+        String imageFile = queryImageFolder + imageName;
 
         ImageSearchResult foundImage = ImageRecognition.findImageOnScreen(imageFile, screenshotsFolder, settings, platform);
         return foundImage;
     }
 
     public void waitForImageToDisappearFromScreen(String image) throws Exception {
-        String imageFile = queryImageFolder+image;
+        String imageFile = queryImageFolder + image;
         boolean hasImageDisappeared = ImageRecognition.hasImageDissappearedFromScreenBeforeTimeout(imageFile, screenshotsFolder, platform);
-        assert(hasImageDisappeared);
+        assert (hasImageDisappeared);
     }
 
     /**
@@ -178,7 +180,7 @@ public class TestdroidImageRecognition  {
     // "x_offset" and "y_offset" change the location on the found image where the tap is performed. If not used, the defaults are (0.5, 0.5) which represent the middle of the image.
     public void tapImageOnScreen(String imageName, double x_offset, double y_offset, ImageRecognitionSettings settings) throws Exception {
         ImageSearchResult result = findImageOnScreen(imageName, settings);
-        assert(result.isFound());
+        assert (result.isFound());
         ImageLocation location = result.getImageLocation();
         Point top_left = location.getTopLeft();
         Point top_right = location.getTopRight();
@@ -215,16 +217,15 @@ public class TestdroidImageRecognition  {
     // "frequency" sets the frequency of the taps.
     public void multipleTapImageOnScreen(String imageName, int taps, double frequency, double x_offset, double y_offset, ImageRecognitionSettings settings) throws Exception {
         ImageSearchResult result = findImageOnScreen(imageName, settings);
-        assert(result.isFound());
+        assert (result.isFound());
         ImageLocation location = result.getImageLocation();
-        
+
         Point top_left = location.getTopLeft();
         Point top_right = location.getTopRight();
         Point bottom_left = location.getBottomLeft();
         Point center = location.getCenter();
 
         if ((x_offset == 0.5) && (y_offset == 0.5)) {
-
 
 
             for (int i = 0; i < taps; i++) {
@@ -287,14 +288,14 @@ public class TestdroidImageRecognition  {
         ImageRecognitionSettings settings = new ImageRecognitionSettings();
         return tryTapImageOnScreen(image, 0.5, 0.5, settings);
     }
-    
+
     // Finds an image on screen and taps and hold on it for a specified duration.
     // "duration" is given in seconds
     // Returns true if Image was found, false if the image was not found
     public boolean tapAndHoldImageOnScreen(String imageName, double x_offset, double y_offset, int duration, ImageRecognitionSettings settings, boolean with_assert) throws Exception {
         ImageSearchResult foundImage = findImageOnScreen(imageName, settings);
         assert !with_assert || (foundImage.isFound());
-        if (foundImage.isFound() == false ) {
+        if (foundImage.isFound() == false) {
             return false;
         }
 
@@ -328,7 +329,7 @@ public class TestdroidImageRecognition  {
         if (automationName.equalsIgnoreCase("selendroid")) {
             selendroidTapAtCoordinate((int) middleWithOffset.x, (int) middleWithOffset.y, duration);
         } else {
-           new TouchAction(driver).tap((int) middleWithOffset.x, (int) middleWithOffset.y);
+            new TouchAction(driver).tap((int) middleWithOffset.x, (int) middleWithOffset.y);
         }
     }
 
@@ -343,12 +344,12 @@ public class TestdroidImageRecognition  {
     //if "x_offset" and "y_offset" are used, the swipe will start from a relative coordinate of that image. If not used, the swipe will start from the center of the image.
     public void swipeVerticallyOnImage(String imageName, int distance, double x_offset, double y_offset) throws Exception {
         ImageSearchResult searchResult = findImageOnScreen(imageName);
-        assert(searchResult.isFound());
+        assert (searchResult.isFound());
         ImageLocation location = searchResult.getImageLocation();
         Point top_left = location.getTopLeft();
         Point top_right = location.getTopRight();
         Point bottom_left = location.getBottomLeft();
-        
+
         int startX = (int) (top_left.x + (top_right.x - top_left.x) * x_offset);
         int startY = (int) (top_left.y + (bottom_left.y - top_left.y) * y_offset);
         int endX = startX;
@@ -370,7 +371,7 @@ public class TestdroidImageRecognition  {
     //if "x_offset" and "y_offset" are used, the swipe will start from a relative coordinate of that image. If not used, the swipe will start from the center of the image.
     public void swipeHorizontallyOnImage(String imageName, int distance, double x_offset, double y_offset) throws Exception {
         ImageSearchResult searchResult = findImageOnScreen(imageName);
-        assert(searchResult.isFound());
+        assert (searchResult.isFound());
         ImageLocation location = searchResult.getImageLocation();
         Point top_left = location.getTopLeft();
         Point top_right = location.getTopRight();
@@ -550,11 +551,11 @@ public class TestdroidImageRecognition  {
     //Performs a drag and drop from the middle of the "object" image to the middle of the "target" image.
     public void dragFromOneImageToAnother(String object, String target) throws Exception {
         ImageSearchResult object_image = findImageOnScreen(object);
-        assert(object_image.isFound());
+        assert (object_image.isFound());
         ImageLocation object_image_location = object_image.getImageLocation();
-        
+
         ImageSearchResult target_image = findImageOnScreen(target);
-        assert(target_image.isFound());
+        assert (target_image.isFound());
         ImageLocation target_image_location = target_image.getImageLocation();
 
         int startX = (int) object_image_location.getCenter().x;
@@ -579,7 +580,7 @@ public class TestdroidImageRecognition  {
         ImageRecognitionSettings settings = new ImageRecognitionSettings();
         settings.setRetries(10);
         ImageSearchResult object_image = findImageOnScreen(object, settings);
-        assert(object_image.isFound());
+        assert (object_image.isFound());
         ImageLocation object_image_location = object_image.getImageLocation();
 
         int startX = (int) object_image_location.getCenter().x;
@@ -605,7 +606,7 @@ public class TestdroidImageRecognition  {
         ImageRecognitionSettings settings = new ImageRecognitionSettings();
         settings.setRetries(10);
         ImageSearchResult object_image = findImageOnScreen(object, settings);
-        assert(object_image.isFound());
+        assert (object_image.isFound());
         ImageLocation object_image_location = object_image.getImageLocation();
 
         int startX = (int) object_image_location.getCenter().x;

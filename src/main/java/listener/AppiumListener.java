@@ -15,8 +15,8 @@ public class AppiumListener implements AppiumWebDriverEventListener {
 
     AndroidDevice androidDevice;
 
-    public AppiumListener(AndroidDevice androidDevice){
-        this.androidDevice=androidDevice;
+    public AppiumListener(AndroidDevice androidDevice) {
+        this.androidDevice = androidDevice;
 
     }
 
@@ -98,13 +98,13 @@ public class AppiumListener implements AppiumWebDriverEventListener {
             if (BaseTestCase.isElementExist("new UiSelector().text(\"Allow\")")) {
                 logger.info("Allow click");
                 androidDevice.findElementByAndroidUIAutomator("new UiSelector().text(\"Allow\")").click();
-            }else if (BaseTestCase.isElementExist("new UiSelector().text(\"Always\")")&&
-                    (BaseTestCase.isElementExist("new UiSelector().text(\"Use Joy Launcher as Home\")"))){
+            } else if (BaseTestCase.isElementExist("new UiSelector().text(\"Always\")") &&
+                    (BaseTestCase.isElementExist("new UiSelector().text(\"Use Joy Launcher as Home\")"))) {
                 androidDevice.findElementByAndroidUIAutomator("new UiSelector().text(\"Always\")").click();
                 logger.info("Always click");
                 break;
-            } else if (BaseTestCase.isElementExist("new UiSelector().text(\"Always\")")&&
-                    BaseTestCase.isElementExist("new UiSelector().text(\"Joy Launcher\")") ){
+            } else if (BaseTestCase.isElementExist("new UiSelector().text(\"Always\")") &&
+                    BaseTestCase.isElementExist("new UiSelector().text(\"Joy Launcher\")")) {
                 androidDevice.findElementByAndroidUIAutomator("new UiSelector().text(\"Joy Launcher\")").click();
                 try {
                     Thread.sleep(3000);
@@ -114,13 +114,12 @@ public class AppiumListener implements AppiumWebDriverEventListener {
                 androidDevice.findElementByAndroidUIAutomator("new UiSelector().text(\"Always\")").click();
                 logger.info("Joy Launcher&&Always click");
                 break;
-            }
-            else if (BaseTestCase.isElementExist("new UiSelector().textContains(\"Unfortunately\")")){
+            } else if (BaseTestCase.isElementExist("new UiSelector().textContains(\"Unfortunately\")")) {
                 logger.error("-------------crash--------------");
                 androidDevice.findElementByAndroidUIAutomator("new UiSelector().text(\"OK\")").click();
-                Assert.assertTrue(false,"-------------crash--------------");
+                Assert.assertTrue(false, "-------------crash--------------");
                 break;
-            }else{
+            } else {
                 break;
             }
         }
@@ -128,21 +127,21 @@ public class AppiumListener implements AppiumWebDriverEventListener {
 
     @Override
     public void afterFindBy(By by, WebElement element, WebDriver driver) {
-        System.out.println("afterFindBy:"+by.toString());
+        System.out.println("afterFindBy:" + by.toString());
 
 
     }
 
     @Override
     public void beforeClickOn(WebElement element, WebDriver driver) {
-       // System.out.println("beforeClickOn:");
+        // System.out.println("beforeClickOn:");
 
 
     }
 
     @Override
     public void afterClickOn(WebElement element, WebDriver driver) {
-       // System.out.println("afterClickOn:");
+        // System.out.println("afterClickOn:");
     }
 
     @Override

@@ -63,6 +63,11 @@
             <version>4.5.2</version>
         </dependency>
 
+
+
+
+
+
         <dependency>
             <groupId>io.appium</groupId>
             <artifactId>java-client</artifactId>
@@ -141,11 +146,11 @@
             <!--<version>3.0.6</version>-->
             <!--<scope>provided</scope>-->
         <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>nu.pattern</groupId>-->
-            <!--<artifactId>opencv</artifactId>-->
-            <!--<version>2.4.9-4</version>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>nu.pattern</groupId>
+            <artifactId>opencv</artifactId>
+            <version>2.4.9-4</version>
+        </dependency>
         <dependency>
             <groupId>com.testdroid</groupId>
             <artifactId>mobile-opencv-image-recognition-library</artifactId>

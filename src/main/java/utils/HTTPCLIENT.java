@@ -50,7 +50,7 @@ import java.security.cert.X509Certificate;
 import java.util.*;
 
 /**
- * Created by Master.wang on 2017/2/16.
+ * Created by Sam.fu on 2017/2/16.
  */
 public class HTTPCLIENT {
 
@@ -469,7 +469,6 @@ public class HTTPCLIENT {
 
     public static void main(String[] args) throws Exception {
         String url="http://launcher-test.tclclouds.com/tlauncher-api/api/kvp";
-
         Map<String,String> parms=new HashMap<>();
         Map<String,String> head=new HashMap<>();
         parms.put("key","");

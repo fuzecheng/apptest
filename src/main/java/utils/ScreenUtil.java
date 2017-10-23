@@ -74,4 +74,9 @@ public class ScreenUtil {
         return same ;
     }
 
+
+
+
+
+
 }
