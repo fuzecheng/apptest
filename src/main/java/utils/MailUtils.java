@@ -18,7 +18,6 @@ public class MailUtils {
     private static Logger logger = LoggerFactory.getLogger(MailUtils.class);
 
     public static void sendMail() throws MessagingException, UnsupportedEncodingException {
-        String to[] = {"xxxx.com"};
         // 配置发送邮件的环境属性
         Properties props = new Properties();
 /*
@@ -30,12 +29,11 @@ public class MailUtils {
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.host", "smtp.qq.com");
 // 发件人的账号
-        props.put("mail.user", "405960648@qq.com");
+        props.put("mail.user", "2776119050@qq.com");
 // 访问SMTP服务时需要提供的密码
-        props.put("mail.password", "kwedtmyrxjepcbbi");
+        props.put("mail.password", "lsslyuequtbodgah");//lsslyuequtbodgah   kwedtmyrxjepcbbi
         props.put("mail.smtp.port", "25");
         props.put("mail.smtp.starttls.enable", "true");
-
         // 构建授权信息，用于进行SMTP进行身份验证
         Authenticator authenticator = new Authenticator() {
             @Override
@@ -53,13 +51,10 @@ public class MailUtils {
         // 设置发件人
         InternetAddress form = new InternetAddress(props.getProperty("mail.user"));
         message.setFrom(form);
-
-
         // 设置收件人
         String toList = "zecheng.fu@tcl.com";
         InternetAddress[] iaToList = new InternetAddress().parse(toList); // 设置多个收件人
         message.setRecipients(MimeMessage.RecipientType.TO, iaToList);
-
 // 设置抄送
 //        InternetAddress cc = new InternetAddress("wuguohui@cvte.com");
 //        message.setRecipient(RecipientType.CC, cc);
@@ -67,16 +62,8 @@ public class MailUtils {
 // 设置密送，其他的收件人不能看到密送的邮件地址
 // InternetAddress bcc = new InternetAddress("aaaaa@163.com");
 // message.setRecipient(RecipientType.CC, bcc);
-
 // 设置邮件标题
         message.setSubject("Web Auto Test Mail");
-        /// message.setContent(GenerateHtml.readSuitsXml(), "text/html;charset=UTF-8");
-//        MimeBodyPart attch2 = new MimeBodyPart();
-//        DataSource ds2 = new FileDataSource(new File(System.getProperty("user.dir")+"\\"+"test-output"+"\\"+"Extent.html"));
-//        DataHandler dh2 = new DataHandler(ds2 );
-//        attch2.setDataHandler(dh2);
-//        attch2.setFileName(MimeUtility.encodeText( "Extent.html"));
-
         Multipart multipart = new MimeMultipart();
         BodyPart localFilePart = new MimeBodyPart();
         localFilePart.setFileName(MimeUtility.encodeText("TestCaseReport.html"));  //设置本地附件名称
@@ -94,13 +81,6 @@ public class MailUtils {
     }
 
     public static void main(String[] args) throws MessagingException, UnsupportedEncodingException {
-
     }
 
-//    public String readReport(){
-//        File file=new File(System.getProperty("user.dir")+"\\"+"test-output"+"\\"+"Extent.html");
-//        InputStream
-//
-//        return report;
-//    }
 }

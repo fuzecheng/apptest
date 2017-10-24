@@ -5,8 +5,11 @@ import io.appium.java_client.TouchAction;
 
 
 import io.appium.java_client.android.AndroidKeyCode;
+import io.appium.java_client.android.Connection;
 import io.appium.java_client.events.EventFiringWebDriverFactory;
 import io.appium.java_client.functions.ExpectedCondition;
+import io.appium.java_client.remote.AutomationName;
+import io.appium.java_client.remote.MobileCapabilityType;
 import listener.AppiumListener;
 import listener.ElementEventListener;
 
@@ -19,6 +22,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +32,7 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import utils.AndroidDevice;
 import utils.BaseTestCase;
+import utils.LogCatHelper;
 import utils.MailUtils;
 
 
@@ -43,6 +48,7 @@ import java.util.*;
 
 import static org.junit.Assert.assertTrue;
 import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertNotNull;
 
 /**
  * Created by Administrator on 2017/9/3.
@@ -56,16 +62,16 @@ public class AppTest extends BaseTestCase {
     List<WebElement> elements;
     HashMap<String, By> map;
     public Logger logger = LoggerFactory.getLogger(AppTest.class);
-//        EventFiringWebDriver eventDriver;
+    LogCatHelper helper;
 
 
     @BeforeTest
     public void setUp() throws MalformedURLException, InterruptedException {
         //设置apk的路径
+
         File classpathRoot = new File(System.getProperty("user.dir"));
         File appDir = new File(classpathRoot, "apps");
         File app = new File(appDir, "2018launcher_v5.apk");
-//        ElementEventListener elementEventListener=new  ElementEventListener();
         //设置自动化相关参数
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability(CapabilityType.SUPPORTS_LOCATION_CONTEXT, "");
@@ -73,6 +79,8 @@ public class AppTest extends BaseTestCase {
         //PZAIQC5995LJ6HF6 33004c65ac88c2f9 0123456789ABCDEF
         capabilities.setCapability("deviceName", "192.168.185.101:5555");
         capabilities.setCapability("noReset", "true");
+
+        capabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, AutomationName.ANDROID_UIAUTOMATOR2);
         //设置安卓系统版本 5.1.1
         capabilities.setCapability("platformVersion", "6.0");
         //设置apk路径
@@ -90,10 +98,9 @@ public class AppTest extends BaseTestCase {
         elements = new LinkedList();
         map = new LinkedHashMap<String, By>();
         driver = EventFiringWebDriverFactory.getEventFiringWebDriver(driver, new AppiumListener(driver));
-//        WebDriver.Navigation navigate = driver.navigate();
-//        eventDriver=new EventFiringWebDriver(driver);
-//        eventDriver.register(new AppiumListener());
-
+        //初始化日志记录
+        helper=new LogCatHelper("com.tct.launcher");
+        helper.start();
     }
 
     /**
@@ -103,35 +110,10 @@ public class AppTest extends BaseTestCase {
      */
     @Test
     public void testInstallsetUp() throws InterruptedException {
-        //  androidDriver.pressKeyCode(AndroidKeyCode.HOME);
-//
-//        text.get(0).sendKeys("123");
-//        text.get(1).sendKeys("456");
-//        driver.findElement(By.name("Save")).click();
-//        driver.getKeyboard().sendKeys("");
-
-        setupeliment = new LinkedList<>();
-        setupeliment.add(By.name("GOT IT"));
-        setupeliment.add(By.name("Joy Launcher"));
-//        setupeliment.add(By.name("Always"));
-        Iterator iterator = setupeliment.iterator();
-        int flag = 0;
-        while (iterator.hasNext()) {
-            By by = (By) iterator.next();
-            if (flag == 1) {
-                driver.pressKeyCode(AndroidKeyCode.HOME);
-                sleep(500);
-                exsitClick(by);
-                flag++;
-            } else {
-                sleep(500);
-                exsitClick(by);
-                flag++;
-            }
-        }
         try {
+            driver.findElement(By.id("com.tct.launcher:id/cling_dismiss_longpress_info")).click();
             driver.pressKeyCode(AndroidKeyCode.HOME);
-//            driver.findElement(By.name("Always"));
+            assertNotNull(driver.findElement(By.className("android.view.ViewGroup")));
         } catch (org.openqa.selenium.NoSuchElementException ex) {
             logger.info("====no always elemnet===");
         }
@@ -146,7 +128,7 @@ public class AppTest extends BaseTestCase {
     public void testLoginApps() throws InterruptedException {
         driver.pressKeyCode(AndroidKeyCode.HOME);
         sleep(1000);
-        element = driver.findElement(By.name("Apps"));
+        element = driver.findElementByAccessibilityId("Apps");
         element.click();
         map.put("com.tct.launcher:id/launcher", By.id("com.tct.launcher:id/launcher"));
         map.put("com.tct.launcher:id/drag_layer", By.id("com.tct.launcher:id/drag_layer"));
@@ -177,15 +159,12 @@ public class AppTest extends BaseTestCase {
         driver.pressKeyCode(AndroidKeyCode.HOME);
         sleep(1000);
         driver.swipeRight();
-//        allow();
         if (isElementExist(By.id("com.tcl.mie.launcher.lscreen:id/layPopWin"))) {
             Assert.assertTrue(true);
         } else {
             assertFalse(true, "ISCREEN IS null");
         }
         driver.pressKeyCode(AndroidKeyCode.HOME);
-        OpenCV cv = new OpenCV();
-//        Imgproc.matchTemplate();
 
     }
 
@@ -197,7 +176,6 @@ public class AppTest extends BaseTestCase {
         try {
             //操作wifi
             //androidDriver.setConnection(Connection.WIFI);
-
             sleep(2000);
             controlSettingsButton();
             sleep(1000);
@@ -223,7 +201,6 @@ public class AppTest extends BaseTestCase {
         controlSettingsButton();
         sleep(1000);
         driver.swipeRight();
-        allow();
         if (isElementExist(By.id("com.tcl.mie.launcher.lscreen:id/layPopWin"))) {
             assertTrue(true);
         } else {
@@ -279,11 +256,9 @@ public class AppTest extends BaseTestCase {
         }
 //            driver.findElement(By.name("OK")).click();
         sleep(5000);
-
         if (isElementExist(By.name("Sample"))) {
             removeWidget("Sample");
             assertTrue(true);
-
         } else {
             assertTrue("===Can not find widget===", false);
         }
@@ -343,6 +318,34 @@ public class AppTest extends BaseTestCase {
 
     }
 
+
+
+    /**
+     *
+     * 意见反馈
+     *
+     * @throws IOException
+     * @throws MessagingException
+     */
+    @Test
+    public void testFeedBack() throws InterruptedException {
+        loginFeedBack();
+        driver.setConnection(Connection.WIFI);
+        driver.findElement(By.id("com.tct.launcher:id/rating_bar")).click();
+        driver.findElement(By.id("com.tct.launcher:id/feedback_title_submit")).click();
+        WebDriverWait webDriverWait=new WebDriverWait(driver,2);
+        /**
+         * 通过Xpath的方式解决Toast断言问题
+         */
+        String toast="Problem description cannot be empty!";
+        assertNotNull(webDriverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath((".//*[contains(@text,'"+ toast + "')]")))));
+
+
+    }
+
+
+
+
     /**
      * 操作-1屏开关按钮
      *
@@ -361,28 +364,17 @@ public class AppTest extends BaseTestCase {
     }
 
 
+
+
     @AfterTest
     public void tearDown() throws IOException, MessagingException {
+        helper.stop();
         Runtime.getRuntime().exec("adb shell pm clear com.tcl.hawk.ts");
         driver.removeApp("com.tct.launcher");
         driver.quit();
         MailUtils.sendMail();
     }
 
-
-    /**
-     * 废弃
-     */
-    public void allow() {
-        while (isElementExist(By.name("Allow"))) {
-            driver.findElement(By.name("Allow")).click();
-            try {
-                sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 
     /**
      * 进入背景界面
@@ -404,12 +396,10 @@ public class AppTest extends BaseTestCase {
         element = driver.findElement(By.id("com.tct.launcher:id/widget_button"));
         element.click();
 //        List<LogEntry> crashEntries = driver.manage().logs().get("crashlog").getAll();
-//
 //        if (crashEntries.size() > 0) {
 //            logger.info("CRASH ENTRY DETECTED"+crashEntries.get(0).getMessage());
 //        }
     }
-
     /**
      * 删除小部件
      *
@@ -420,5 +410,19 @@ public class AppTest extends BaseTestCase {
         action.longPress(element).perform().moveTo(driver.findElementByAndroidUIAutomator("new UiSelector().textContains(\"Remove\")")).release().perform();
         driver.pressKeyCode(AndroidKeyCode.HOME);
     }
+    /**
+     *  进入反馈页面
+     */
+
+    public void loginFeedBack() throws InterruptedException {
+        longClick("com.tct.launcher:id/all_app_blur_view");
+        element = driver.findElement(By.id("com.tct.launcher:id/settings_button"));
+        element.click();
+        elements = driver.findElements(By.className("android.widget.RelativeLayout"));
+        elements.get(3).click();
+        sleep(500);
+    }
+
+
 
 }
