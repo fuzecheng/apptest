@@ -67,7 +67,7 @@ public class BaseTestCase {
         try {
             driver.findElementByAndroidUIAutomator(uiautomator);
             return true;
-        } catch (org.openqa.selenium.NoSuchElementException ex) {
+        } catch (Exception ex) {
             return false;
         }
 
@@ -76,7 +76,7 @@ public class BaseTestCase {
         try {
             driver.findElementByAndroidUIAutomator(uiautomator);
             return true;
-        } catch (org.openqa.selenium.NoSuchElementException ex) {
+        } catch (Exception ex) {
             return false;
         }
 

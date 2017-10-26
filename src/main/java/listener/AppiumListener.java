@@ -106,7 +106,7 @@ public class AppiumListener implements AppiumWebDriverEventListener {
                     BaseTestCase.isElementExist("new UiSelector().text(\"Joy Launcher\")")) {
                 androidDevice.findElementByAndroidUIAutomator("new UiSelector().text(\"Joy Launcher\")").click();
                 try {
-                    Thread.sleep(3000);
+                    Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

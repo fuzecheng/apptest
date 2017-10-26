@@ -37,6 +37,7 @@ public class TestngListener extends TestListenerAdapter {
         BaseTestCase baseTestcase=(BaseTestCase)tr.getInstance();
         baseTestcase.takescreen(tr.getName());
 
+
     }
 
     @Override

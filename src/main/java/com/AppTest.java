@@ -15,6 +15,7 @@ import listener.ElementEventListener;
 
 
 import nu.pattern.OpenCV;
+import org.junit.rules.TestWatcher;
 import org.opencv.imgproc.Imgproc;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -71,7 +72,7 @@ public class AppTest extends BaseTestCase {
 
         File classpathRoot = new File(System.getProperty("user.dir"));
         File appDir = new File(classpathRoot, "apps");
-        File app = new File(appDir, "2018launcher_v5.apk");
+        File app = new File(appDir, "2018launcher_v1.4.apk");
         //设置自动化相关参数
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability(CapabilityType.SUPPORTS_LOCATION_CONTEXT, "");
@@ -79,7 +80,6 @@ public class AppTest extends BaseTestCase {
         //PZAIQC5995LJ6HF6 33004c65ac88c2f9 0123456789ABCDEF
         capabilities.setCapability("deviceName", "192.168.185.101:5555");
         capabilities.setCapability("noReset", "true");
-
         capabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, AutomationName.ANDROID_UIAUTOMATOR2);
         //设置安卓系统版本 5.1.1
         capabilities.setCapability("platformVersion", "6.0");
@@ -256,7 +256,7 @@ public class AppTest extends BaseTestCase {
         }
 //            driver.findElement(By.name("OK")).click();
         sleep(5000);
-        if (isElementExist(By.name("Sample"))) {
+        if (isElementExist("new UiSelector().text(\"Sample\")")) {
             removeWidget("Sample");
             assertTrue(true);
         } else {
@@ -276,30 +276,37 @@ public class AppTest extends BaseTestCase {
         longClick("com.tct.launcher:id/all_app_blur_view");
         if (isElementExist(By.id("com.tct.launcher:id/theme_button"))) {
             driver.findElement(By.id("com.tct.launcher:id/theme_button")).click();
-            sleep(3000);
+//            WebDriverWait webDriverWait=new WebDriverWait(driver,5);
+//            webDriverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("com.tcl.hawk.ts:id/dialog_tv_cancel"))).click();
+            driver.findElement(By.id("com.tcl.hawk.ts:id/base_activity_root_view"));
             element = (new WebDriverWait(driver, 60))
                     .until(new ExpectedCondition<MobileElement>() {
                         @Override
                         public MobileElement apply(WebDriver d) {
+
                             int width = driver.manage().window().getSize().width;
                             int height = driver.manage().window().getSize().height;
                             driver.swipe(width / 2, height * 9 / 20, width / 2, height / 20, 500);
                             logger.info("scroll=======" + height * 3 / 4 + " " + height / 8);
-                            WebElement mushroom = driver.findElement(By
-                                    .name("Mushroom Forest"));
+                            WebElement mushroom =
+                                    driver.findElementByXPath("/hierarchy/android.widget.FrameLayout/android.wi" +
+                                            "dget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/" +
+                                            "android.widget.FrameLayout[2]/android.widget.RelativeLayout/" +
+                                            "android.support.v4.view.ViewPager/android.widget.FrameLayout/android.view.ViewGroup" +
+                                            "/android.support.v7.widget.RecyclerView/android.widget.LinearLayout[2]/android.widget.TextView[1]");
                             return (MobileElement) mushroom;
                         }
                     });
             element.click();
             sleep(5000);
-            driver.findElement(By.name("Download")).click();
-            element = (new WebDriverWait(driver, 30)).until(new ExpectedCondition<WebElement>() {
+            driver.findElement(By.id("com.tcl.hawk.ts:id/pb_progress")).click();
+            element = (new WebDriverWait(driver, 40)).until(new ExpectedCondition<WebElement>() {
                 @Override
                 public WebElement apply(WebDriver input) {
-                    if (isElementExist(By.name("Paused"))) {
-                        driver.findElement(By.name("Paused")).click();
+                    if (isElementExist("new UiSelector().text(\"Paused\")")) {
+                        driver.findElementByAndroidUIAutomator("new UiSelector().text(\"Paused\")").click();
                     }
-                    WebElement apply = driver.findElement(By.name("Apply"));
+                    WebElement apply = driver.findElementByAndroidUIAutomator("new UiSelector().text(\"Apply\")");
                     return apply;
                 }
             });
@@ -372,7 +379,7 @@ public class AppTest extends BaseTestCase {
         Runtime.getRuntime().exec("adb shell pm clear com.tcl.hawk.ts");
         driver.removeApp("com.tct.launcher");
         driver.quit();
-        MailUtils.sendMail();
+//        MailUtils.sendMail();
     }
 
 
@@ -406,8 +413,9 @@ public class AppTest extends BaseTestCase {
      * @param widget
      */
     public void removeWidget(String widget) {
-        element = driver.findElement(By.name(widget));
+        element = driver.findElementByAccessibilityId("Sample");
         action.longPress(element).perform().moveTo(driver.findElementByAndroidUIAutomator("new UiSelector().textContains(\"Remove\")")).release().perform();
+        //action.longPress(element).perform().moveTo(driver.findElementByAccessibilityId("Remove")).release().perform();
         driver.pressKeyCode(AndroidKeyCode.HOME);
     }
     /**

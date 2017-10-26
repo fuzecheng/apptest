@@ -1,12 +1,19 @@
 package watcher;
 
 import utils.BaseTestCase;
+import utils.FingerPrint;
 import utils.ScreenUtil;
 
-public class Test {
+import javax.imageio.ImageIO;
+import java.io.File;
+import java.io.IOException;
 
-    public static void main(String[] args) {
-        System.out.println(System.getProperty("user.dir"));
-        System.out.println(System.getProperty("user.dir")+"\\"+"test-output"+"\\"+"Extent.html");
+public class Test {
+//"target/reports/screenshots/theme.png"
+    public static void main(String[] args) throws IOException {
+        FingerPrint fp1 = new FingerPrint(ImageIO.read(new File("queryimages/wallpaper.png")));
+        FingerPrint fp2 =new FingerPrint(ImageIO.read(new File("target/reports/screenshots/wallpaper.png")));
+        System.out.println(fp1.toString(true));
+        System.out.printf("sim=%f",fp1.compare(fp2));
     }
 }

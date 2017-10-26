@@ -16,7 +16,6 @@ import java.util.Properties;
 
 public class MailUtils {
     private static Logger logger = LoggerFactory.getLogger(MailUtils.class);
-
     public static void sendMail() throws MessagingException, UnsupportedEncodingException {
         // 配置发送邮件的环境属性
         Properties props = new Properties();
