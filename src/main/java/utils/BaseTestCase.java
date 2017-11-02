@@ -3,14 +3,18 @@ package utils;
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.events.EventFiringWebDriverFactory;
 import io.appium.java_client.events.api.general.ElementEventListener;
+import model.MailsProperties;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.mail.MessagingException;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.time.Duration;
 
 public class BaseTestCase {
@@ -22,6 +26,7 @@ public class BaseTestCase {
     public void setdriver(AndroidDevice driver){
         BaseTestCase.driver =driver;
     }
+
 
     public void takescreen(String filename){
         ScreenScr.getScreen(driver, filename);
@@ -98,6 +103,21 @@ public class BaseTestCase {
         BufferedImage img2 = ScreenUtil.getImageFromFile(f2);
         Boolean same =ScreenUtil.sameAs(img1, img2, 0.98);
         return same ;
+    }
+    public void tearDown() throws IOException, MessagingException {
+
+    }
+    public void sendMail() throws UnsupportedEncodingException, MessagingException {
+        MailUtils mailUtils=new MailUtils();
+        MailsProperties properties=new MailsProperties();
+        String[] cc={"zecheng.fu@tcl.com","405960648@qq.com"};
+        properties.setCc(cc);
+        properties.setMail_host("smtp.qq.com");
+        properties.setKey("lsslyuequtbodgah");
+        properties.setMail_user("2776119050@qq.com");
+        properties.setPort(25);
+        properties.setReceiver(cc);
+        mailUtils.sendMail(properties);
     }
 
 

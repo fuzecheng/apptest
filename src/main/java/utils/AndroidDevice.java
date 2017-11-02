@@ -6,10 +6,7 @@ import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.service.local.AppiumDriverLocalService;
 import io.appium.java_client.service.local.AppiumServiceBuilder;
 import jdk.internal.instrumentation.Tracer;
-import org.openqa.selenium.Capabilities;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Point;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.remote.HttpCommandExecutor;
 import org.openqa.selenium.remote.http.HttpClient;
 import org.slf4j.Logger;
@@ -128,10 +125,8 @@ public class AndroidDevice extends AndroidDriver {
 
     public void doSwipe(int startx, int starty, int endx, int endy, int duration) {
         TouchAction touchAction = new TouchAction(this);
-
         // appium converts press-wait-moveto-release to a swipe action
         touchAction.press(startx, starty).waitAction(Duration.ofMillis(duration)).moveTo(endx, endy).release();
-
         touchAction.perform();
     }
     public void swipe(int startx, int starty, int endx, int endy, int duration) {
@@ -144,7 +139,7 @@ public class AndroidDevice extends AndroidDriver {
     public void swipeUp(float topPad, float bottomPad) {
         Dimension size = manage().window().getSize();
         logger.debug("Window size is " + size);
-        swipeUp(new Point(0, 0), size, 200, topPad, bottomPad);
+        swipeUp(new Point(0, 0), size, 250, topPad, bottomPad);
     }
 
     public void swipeUp(Point rootLocation, Dimension rootSize, int duration, float topPad, float bottomPad) {
@@ -171,7 +166,7 @@ public class AndroidDevice extends AndroidDriver {
     public void swipeDown(float topPad, float bottomPad) {
         Dimension size = manage().window().getSize();
         logger.debug("Window size is " + size);
-        swipeDown(new Point(0, 0), size, 200, topPad, bottomPad);
+        swipeDown(new Point(0, 0), size, 250, topPad, bottomPad);
     }
 
     public void swipeDown(Point rootLocation, Dimension rootSize, int duration, float topPad, float bottomPad) {
@@ -198,7 +193,7 @@ public class AndroidDevice extends AndroidDriver {
     public void swipeLeft(float leftPad, float rightPad) {
         Dimension size = manage().window().getSize();
         logger.debug("Window size " + size);
-        swipeLeft(new Point(0,0), size, 200, leftPad, rightPad);
+        swipeLeft(new Point(0,0), size, 250, leftPad, rightPad);
     }
 
     public void swipeLeft(Point rootLocation, Dimension rootSize, int duration, float leftPad, float rightPad) {
@@ -224,7 +219,7 @@ public class AndroidDevice extends AndroidDriver {
 
     public void swipeRight(float leftPad, float rightPad) {
         Dimension size = manage().window().getSize();
-        swipeRight(new Point(0,0), size, 200, leftPad, rightPad);
+        swipeRight(new Point(0,0), size, 250, leftPad, rightPad);
     }
 
     public void swipeRight(Point rootLocation, Dimension rootSize, int duration, float leftPad, float rightPad) {
@@ -252,7 +247,14 @@ public class AndroidDevice extends AndroidDriver {
     }
 
 
-
-
-
+    public WebElement findByUiautomator_text(String name) {
+        return findElementByAndroidUIAutomator("new UiSelector().text(\""+name+"\")");
+    }
+    public WebElement findByUiautomator_textContains(String contains) {
+        return findElementByAndroidUIAutomator("new UiSelector().textContains(\""+contains+"\")");
+    }
+    //desc
+    public WebElement findByUiautomator_desc(String description) {
+        return findElementByAndroidUIAutomator("new UiSelector().description(\""+description+"\")");
+    }
 }

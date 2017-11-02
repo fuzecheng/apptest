@@ -66,7 +66,7 @@ public class ScreenUtil {
     }
 
     public static boolean compare(String define_name,String screen_shot_name){
-        File f1 = new File("queryimages/"+define_name+".png");
+        File f1 = new File("-/"+define_name+".png");
         BufferedImage img1 = ScreenUtil.getImageFromFile(f1);
         File f2 = new File("target/reports/screenshots/"+screen_shot_name+".png");
         BufferedImage img2 = ScreenUtil.getImageFromFile(f2);

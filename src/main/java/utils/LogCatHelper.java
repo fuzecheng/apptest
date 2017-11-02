@@ -24,6 +24,7 @@ public class LogCatHelper {
      * 初始化目录
      *
      * */
+    public static String msg;
     public LogCatHelper(String package_name) {
          mLogDumper = new LogDumper(package_name);
          }
@@ -90,6 +91,7 @@ public class LogCatHelper {
                 String line = null;
                 while (mRunning && (line = mReader.readLine()) != null) {
                     if (!mRunning) {
+                        Runtime.getRuntime().exec("adb logcat -c");
                         break;
                     }
                     if (line.length() == 0) {
@@ -98,6 +100,10 @@ public class LogCatHelper {
                     if (out != null&&!line.contains("appium")) {
                         out.write((LogcatDate.getFileName() + "  " + line + "\n")
                                 .getBytes());
+                    }
+                    if (msg!=null){
+                        out.write((msg+ "\n"+ "\n"+ "\n").getBytes());
+                        msg=null;
                     }
                 }
 

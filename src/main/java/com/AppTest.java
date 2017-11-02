@@ -111,12 +111,28 @@ public class AppTest extends BaseTestCase {
     @Test
     public void testInstallsetUp() throws InterruptedException {
         try {
+            int i = 0;
+            while (i < 3){
+                if (isElementExist(By.id("com.tct.launcher:id/instruction_next"))) {
+                    driver.findElement(By.id("com.tct.launcher:id/instruction_next")).click();
+                    i++;
+                }else {
+                    break;
+                }
+
+            }
+        if (isElementExist("new UiSelector().textContains(\"Experience improvement\")"));{
+                driver.findElement(By.id("android:id/button1")).click();
+            }
             driver.findElement(By.id("com.tct.launcher:id/cling_dismiss_longpress_info")).click();
-            driver.pressKeyCode(AndroidKeyCode.HOME);
-            assertNotNull(driver.findElement(By.className("android.view.ViewGroup")));
-        } catch (org.openqa.selenium.NoSuchElementException ex) {
+//            driver.pressKeyCode(AndroidKeyCode.HOME);
+//            assertNotNull(driver.findElement(By.className("android.view.ViewGroup")));
+        }
+
+        catch (org.openqa.selenium.NoSuchElementException ex) {
             logger.info("====no always elemnet===");
         }
+//        driver.pressKeyCode(AndroidKeyCode.HOME);
 
     }
 
@@ -126,8 +142,9 @@ public class AppTest extends BaseTestCase {
      */
     @Test
     public void testLoginApps() throws InterruptedException {
-        driver.pressKeyCode(AndroidKeyCode.HOME);
-        sleep(1000);
+//        driver.pressKeyCode(AndroidKeyCode.HOME);
+//        driver.findElement(By.id("com.tct.launcher:id/launcher"));
+//        sleep(1000);
         element = driver.findElementByAccessibilityId("Apps");
         element.click();
         map.put("com.tct.launcher:id/launcher", By.id("com.tct.launcher:id/launcher"));
@@ -146,6 +163,27 @@ public class AppTest extends BaseTestCase {
                 assertFalse(true, "NULL:" + entry.getKey());
             }
         }
+        element = (new WebDriverWait(driver, 60))
+                .until(new ExpectedCondition<MobileElement>() {
+                    @Override
+                    public MobileElement apply(WebDriver d) {
+
+                        int width = driver.manage().window().getSize().width;
+                        int height = driver.manage().window().getSize().height;
+                        driver.swipe(width / 2, height * 9 / 20, width / 2, height / 20, 500);
+                        logger.info("scroll=======" + height * 3 / 4 + " " + height / 8);
+                        WebElement settings =
+                                driver.findElementByAccessibilityId("Settings");
+                        return (MobileElement) settings;
+                    }
+                });
+        element.click();
+        sleep(2000);
+        driver.findElementByAndroidUIAutomator("new UiSelector().text(\"Home\")").click();
+        driver.findElementByXPath("/hierarchy/android.widget.FrameLayout/android.view.ViewGroup/" +
+                "android.widget.FrameLayout[2]/android.widget.LinearLayout/android.widget.LinearLayout/" +
+                "android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/" +
+                "android.widget.ListView/android.widget.LinearLayout[2]/android.widget.LinearLayout/android.widget.RadioButton").click();
         driver.pressKeyCode(AndroidKeyCode.HOME);
     }
 
@@ -156,16 +194,22 @@ public class AppTest extends BaseTestCase {
      */
     @Test
     public void testDefaultIscreen() throws InterruptedException {
-        driver.pressKeyCode(AndroidKeyCode.HOME);
         sleep(1000);
         driver.swipeRight();
-        if (isElementExist(By.id("com.tcl.mie.launcher.lscreen:id/layPopWin"))) {
+        element=(new WebDriverWait(driver,2)).until(new ExpectedCondition<WebElement>() {
+            @Nullable
+            @Override
+            public WebElement apply(@Nullable WebDriver input) {
+                return driver.findElement(By.id("com.tct.launcher:id/ok"));
+            }
+        });
+         element.click();
+        if (isElementExist(By.id("com.tct.launcher:id/workspace"))) {
             Assert.assertTrue(true);
         } else {
             assertFalse(true, "ISCREEN IS null");
         }
         driver.pressKeyCode(AndroidKeyCode.HOME);
-
     }
 
     /**
@@ -246,13 +290,13 @@ public class AppTest extends BaseTestCase {
         loginWidget();
         elements = driver.findElements(By.id("com.tct.launcher:id/widget_preview"));
         element = driver.findElement(By.className("android.view.ViewGroup"));
-        driver.slide(elements.get(1), element);
+        driver.slide(elements.get(2), element);
         sleep(2000);
         if (isElementExist(By.className("android.widget.CheckBox"))) {
             driver.findElement(By.className("android.widget.CheckBox")).click();
         }
-        if (isElementExist(By.name("Create"))) {
-            driver.findElement(By.name("Create")).click();
+        if (isElementExist("new UiSelector().text(\"Create\")")) {
+            driver.findElementByAndroidUIAutomator("new UiSelector().text(\"Create\")").click();
         }
 //            driver.findElement(By.name("OK")).click();
         sleep(5000);
@@ -273,12 +317,15 @@ public class AppTest extends BaseTestCase {
     public void testChangeTheme() throws InterruptedException, IOException {
         driver.pressKeyCode(AndroidKeyCode.HOME);
         sleep(2000);
-        longClick("com.tct.launcher:id/all_app_blur_view");
+        longClick("com.tct.launcher:id/workspace");
         if (isElementExist(By.id("com.tct.launcher:id/theme_button"))) {
             driver.findElement(By.id("com.tct.launcher:id/theme_button")).click();
 //            WebDriverWait webDriverWait=new WebDriverWait(driver,5);
 //            webDriverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("com.tcl.hawk.ts:id/dialog_tv_cancel"))).click();
-            driver.findElement(By.id("com.tcl.hawk.ts:id/base_activity_root_view"));
+            sleep(3000);
+            if(!isElementExist(By.id("com.tcl.hawk.ts:id/base_activity_root_view"))){
+                assertFalse(true);
+            }
             element = (new WebDriverWait(driver, 60))
                     .until(new ExpectedCondition<MobileElement>() {
                         @Override
@@ -349,10 +396,57 @@ public class AppTest extends BaseTestCase {
 
 
     }
+    @Test
+    public void testSearch() throws InterruptedException {
+        driver.pressKeyCode(AndroidKeyCode.HOME);
+        sleep(3000);
+        driver.swipeUp();
+        if (!map.isEmpty()){
+            map.clear();
+        }
+        map.put("com.tct.launcher:id/search_editText",By.id("com.tct.launcher:id/search_editText"));
+        map.put("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.ListView/android.widget.FrameLayout[1]",By.xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.ListView/android.widget.FrameLayout[1]"));
+        map.put("com.tct.launcher:id/hot_word_title",By.id("com.tct.launcher:id/hot_word_title"));
+        map.put("com.tct.launcher:id/title",By.id("com.tct.launcher:id/title"));
+        Iterator iterator=map.entrySet().iterator();
+        while (iterator.hasNext()){
+            Map.Entry entry=(Map.Entry) iterator.next();
+            By value=(By) entry.getValue();
+            String key=(String) entry.getKey();
+            if (!isElementExist(value)){
+                logger.error("no element"+key);
+            }
+        }
+        driver.findElementById("com.tct.launcher:id/search_editText").sendKeys("english");
+        driver.findElementById("com.tct.launcher:id/search_appcenter_item_name").click();
+    }
 
 
 
 
+
+
+
+    @AfterTest
+    public void tearDown() throws IOException, MessagingException {
+        helper.stop();
+        Runtime.getRuntime().exec("adb shell pm clear com.tcl.hawk.ts");
+        driver.removeApp("com.tct.launcher");
+        driver.quit();
+//        sendMail();
+    }
+
+
+    /**
+     * 进入背景界面
+     */
+    public void loginWallpaper() {
+        driver.pressKeyCode(AndroidKeyCode.HOME);
+        longClick("com.tct.launcher:id/workspace");
+        element = driver.findElement(By.id("com.tct.launcher:id/wallpaper_button"));
+        element.click();
+
+    }
     /**
      * 操作-1屏开关按钮
      *
@@ -360,7 +454,7 @@ public class AppTest extends BaseTestCase {
      */
 
     public void controlSettingsButton() throws InterruptedException {
-        longClick("com.tct.launcher:id/all_app_blur_view");
+        longClick("com.tct.launcher:id/workspace");
         element = driver.findElement(By.id("com.tct.launcher:id/settings_button"));
         element.click();
         elements = driver.findElements(By.id("android:id/switchWidget"));
@@ -372,34 +466,12 @@ public class AppTest extends BaseTestCase {
 
 
 
-
-    @AfterTest
-    public void tearDown() throws IOException, MessagingException {
-        helper.stop();
-        Runtime.getRuntime().exec("adb shell pm clear com.tcl.hawk.ts");
-        driver.removeApp("com.tct.launcher");
-        driver.quit();
-//        MailUtils.sendMail();
-    }
-
-
-    /**
-     * 进入背景界面
-     */
-    public void loginWallpaper() {
-        driver.pressKeyCode(AndroidKeyCode.HOME);
-        longClick("com.tct.launcher:id/all_app_blur_view");
-        element = driver.findElement(By.id("com.tct.launcher:id/wallpaper_button"));
-        element.click();
-
-    }
-
     /**
      * 进入小部件
      */
     public void loginWidget() {
         driver.pressKeyCode(AndroidKeyCode.HOME);
-        longClick("com.tct.launcher:id/all_app_blur_view");
+        longClick("com.tct.launcher:id/workspace");
         element = driver.findElement(By.id("com.tct.launcher:id/widget_button"));
         element.click();
 //        List<LogEntry> crashEntries = driver.manage().logs().get("crashlog").getAll();
@@ -423,11 +495,10 @@ public class AppTest extends BaseTestCase {
      */
 
     public void loginFeedBack() throws InterruptedException {
-        longClick("com.tct.launcher:id/all_app_blur_view");
-        element = driver.findElement(By.id("com.tct.launcher:id/settings_button"));
-        element.click();
-        elements = driver.findElements(By.className("android.widget.RelativeLayout"));
-        elements.get(3).click();
+        longClick("com.tct.launcher:id/workspace");
+        driver.findElement(By.id("com.tct.launcher:id/settings_button")).click();
+        sleep(4000);
+        driver.findByUiautomator_text("Feedback").click();
         sleep(500);
     }
 
