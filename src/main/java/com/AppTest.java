@@ -2,27 +2,15 @@ package com;
 
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.TouchAction;
-
-
 import io.appium.java_client.android.AndroidKeyCode;
 import io.appium.java_client.android.Connection;
 import io.appium.java_client.events.EventFiringWebDriverFactory;
 import io.appium.java_client.functions.ExpectedCondition;
-import io.appium.java_client.remote.AutomationName;
-import io.appium.java_client.remote.MobileCapabilityType;
 import listener.AppiumListener;
-import listener.ElementEventListener;
-
-
-import nu.pattern.OpenCV;
-import org.junit.rules.TestWatcher;
-import org.opencv.imgproc.Imgproc;
+import model.AppiumSettings;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.remote.CapabilityType;
-import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
@@ -35,15 +23,11 @@ import utils.AndroidDevice;
 import utils.BaseTestCase;
 import utils.LogCatHelper;
 import utils.MailUtils;
-
-
 import javax.annotation.Nullable;
 import javax.mail.MessagingException;
-import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.time.Duration;
 import java.util.*;
 
 
@@ -69,29 +53,14 @@ public class AppTest extends BaseTestCase {
     @BeforeTest
     public void setUp() throws MalformedURLException, InterruptedException {
         //设置apk的路径
-
-        File classpathRoot = new File(System.getProperty("user.dir"));
-        File appDir = new File(classpathRoot, "apps");
-        File app = new File(appDir, "2018launcher_v1.4.apk");
-        //设置自动化相关参数
-        DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setCapability(CapabilityType.SUPPORTS_LOCATION_CONTEXT, "");
-        capabilities.setCapability("platformName", "Android");
-        //PZAIQC5995LJ6HF6 33004c65ac88c2f9 0123456789ABCDEF
-        capabilities.setCapability("deviceName", "192.168.185.101:5555");
-        capabilities.setCapability("noReset", "true");
-        capabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, AutomationName.ANDROID_UIAUTOMATOR2);
-        //设置安卓系统版本 5.1.1
-        capabilities.setCapability("platformVersion", "6.0");
-        //设置apk路径
-        capabilities.setCapability("app", app.getAbsolutePath());
-        //设置app的主包名和主类名
-        capabilities.setCapability("appPackage", "com.tct.launcher");
-        capabilities.setCapability("appActivity", ".Launcher");
-//        capabilities.setCapability("unicodeKeyboard", "True");
-//        capabilities.setCapability("resetKeyboard", "True");
-        //初始化 需要setDriver,否则会空指针异常
-        driver = new AndroidDevice(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
+        AppiumSettings appiumSettings=new AppiumSettings();
+        appiumSettings.setApk_file_name("2018launcher_v1.4.apk");
+        appiumSettings.setPlantform("Android");
+        appiumSettings.setDevice_name("192.168.185.101:5555");
+        appiumSettings.setPlatform_version("6.0");
+        appiumSettings.setAppPackage("com.tct.launcher");
+        appiumSettings.setAppActivity(".Launcher");
+        driver = new AndroidDevice(new URL("http://127.0.0.1:4723/wd/hub"), settings(appiumSettings));
         action = new TouchAction(driver);
         driver.context("NATIVE_APP");
         setdriver(driver);
@@ -128,12 +97,10 @@ public class AppTest extends BaseTestCase {
 //            driver.pressKeyCode(AndroidKeyCode.HOME);
 //            assertNotNull(driver.findElement(By.className("android.view.ViewGroup")));
         }
-
         catch (org.openqa.selenium.NoSuchElementException ex) {
             logger.info("====no always elemnet===");
         }
 //        driver.pressKeyCode(AndroidKeyCode.HOME);
-
     }
 
 
@@ -501,7 +468,5 @@ public class AppTest extends BaseTestCase {
         driver.findByUiautomator_text("Feedback").click();
         sleep(500);
     }
-
-
 
 }

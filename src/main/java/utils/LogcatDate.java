@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Created by dongsheng.wu on 2016/7/19.
+ * Created by zecheng on 2016/7/19.
  */
 public class LogcatDate {
     public static String getFileName() {

@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * Created by tongseng on 2016/7/19.
+ * Created by zecheng on 2016/7/19.
  */
 /**
  * log日志统计保存
@@ -52,9 +52,14 @@ public class LogCatHelper {
 
         public LogDumper(String package_name) {
             try {
-                File file=new File(System.getProperty("user.dir")+"\\test-output", "APP_log-"
-                        + LogcatDate.getFileName()+ ".log");
-                out = new FileOutputStream(file);
+                File dir=new File(System.getProperty("user.dir")+"\\test-output"+File.separator);
+                if (!dir.exists()){
+                    dir.mkdir();
+                }
+                    File file=new File(dir, "APP_log-"
+                            + LogcatDate.getFileName()+ ".log");
+                    out = new FileOutputStream(file);
+
             } catch (FileNotFoundException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();

@@ -3,9 +3,14 @@ package utils;
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.events.EventFiringWebDriverFactory;
 import io.appium.java_client.events.api.general.ElementEventListener;
+import io.appium.java_client.remote.AutomationName;
+import io.appium.java_client.remote.MobileCapabilityType;
+import model.AppiumSettings;
 import model.MailsProperties;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
+import org.openqa.selenium.remote.CapabilityType;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -86,14 +91,26 @@ public class BaseTestCase {
         }
 
     }
-
-    public void exsitClick(By element){
-        if (isElementExist(element)){
-            driver.findElement(element).click();
-        }else {
-
-        }
+    public DesiredCapabilities settings(AppiumSettings appiumSettings){
+        File classpathRoot = new File(System.getProperty("user.dir"));
+        File appDir = new File(classpathRoot, "apps");
+        File app = new File(appDir, appiumSettings.getApk_file_name());
+        DesiredCapabilities desiredCapabilities=new DesiredCapabilities();
+        desiredCapabilities.setCapability(CapabilityType.SUPPORTS_LOCATION_CONTEXT, "");
+        desiredCapabilities.setCapability("platformName",appiumSettings.getPlantform());
+        desiredCapabilities.setCapability("deviceName", appiumSettings.getDevice_name());
+        desiredCapabilities.setCapability("noReset", "true");
+        desiredCapabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, AutomationName.ANDROID_UIAUTOMATOR2);
+        desiredCapabilities.setCapability("platformVersion", appiumSettings.getPlatform_version());
+        desiredCapabilities.setCapability("app", app.getAbsolutePath());
+        desiredCapabilities.setCapability("appPackage", appiumSettings.getAppPackage());
+        desiredCapabilities.setCapability("appActivity", appiumSettings.getAppActivity());
+        desiredCapabilities.setCapability("unicodeKeyboard", "True");
+        desiredCapabilities.setCapability("resetKeyboard", "True");
+        return desiredCapabilities;
     }
+
+
     public boolean imgCompare(String define_name,String screen_shot_name) throws IOException {
 
         File f1 = new File("queryimages/"+define_name+".png");
