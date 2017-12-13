@@ -4,24 +4,15 @@
     <test verbose="2" preserve-order="true" name="TestDebug">
     <parameter name="driverName" value="chrome" />
     <classes>
-        <class name="com.AppTest">
+        <class name="com.BPStrudentClientTest">
             <methods >
-                <include name="testInstallsetUp"/>
-                <include name="testLoginApps"/>
-                <!--<include name="testDefaultIscreen"/>-->
-                <!--<include name="testIscreenClose"/>-->
-                <!--<include name="testIscreenOpen"/>-->
-                <!--<include name="testChangeWallpaper"/>-->
-                <!--<include name="testWidget"></include>-->
-                <!--<include name="testChangeTheme"></include>-->
-                <!--<include name="testFeedBack"></include>-->
-                <include name="testSearch"></include>
+                <include name="testLogin"/>
             </methods>
         </class>
     </classes>
     </test> <!-- Test -->
     <listeners>
         <listener class-name="utils.TestngListener"></listener>
-        <listener class-name="utils.ExtentReporterNGListener"></listener>
+        <listener class-name="utils.ExtentTestNGIReporterListener"></listener>
     </listeners>
 </suite> <!-- Suite -->

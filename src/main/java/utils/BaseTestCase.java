@@ -99,7 +99,7 @@ public class BaseTestCase {
         desiredCapabilities.setCapability(CapabilityType.SUPPORTS_LOCATION_CONTEXT, "");
         desiredCapabilities.setCapability("platformName",appiumSettings.getPlantform());
         desiredCapabilities.setCapability("deviceName", appiumSettings.getDevice_name());
-        desiredCapabilities.setCapability("noReset", "true");
+        desiredCapabilities.setCapability("noReset", "True");
         desiredCapabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, AutomationName.ANDROID_UIAUTOMATOR2);
         desiredCapabilities.setCapability("platformVersion", appiumSettings.getPlatform_version());
         desiredCapabilities.setCapability("app", app.getAbsolutePath());
