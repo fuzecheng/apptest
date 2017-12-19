@@ -2,11 +2,10 @@ package utils;
 
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.TouchAction;
-import io.appium.java_client.events.EventFiringWebDriverFactory;
-import io.appium.java_client.events.api.general.ElementEventListener;
 import io.appium.java_client.functions.ExpectedCondition;
 import io.appium.java_client.remote.AutomationName;
 import io.appium.java_client.remote.MobileCapabilityType;
+import listener.AppiumListener;
 import model.AppiumSettings;
 import model.MailsProperties;
 import org.apache.commons.io.FileUtils;
@@ -23,8 +22,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
 import java.time.Duration;
+
+import static org.testng.Assert.assertFalse;
 
 public class BaseTestCase {
     public static AndroidDevice driver;
@@ -45,7 +45,56 @@ public class BaseTestCase {
         Thread.sleep(seconds);
     }
 
+    /**
+     *
+     * @param text
+     * @param type 0 ：text
+     *             1： id
+     *             2：contains
+     *             3：classname
+     *             4: desc
+     * @return
+     */
+    public WebElement switchcase(int type,String text){
+        WebElement mushroom=null;
+        switch (type){
+            case 0:
+                mushroom =
+                        driver.findByUiautomator_text(text);
+                break;
+            case 1:
+                mushroom =
+                        driver.findElement(By.id(text));
+                break;
+            case 2:
+                mushroom =
+                        driver.findByUiautomator_textContains(text);
+                break;
+            case 3:
+                mushroom =
+                        driver.findElementByClassName(text);
+                break;
+            case 4:
+                mushroom =
+                        driver.findByUiautomator_desc(text);
+                break;
+        }
 
+        return  mushroom;
+    }
+
+    public WebElement waitElement(int time,int type,String text){
+        MobileElement element = (new WebDriverWait(driver, time))
+                .until(new ExpectedCondition<MobileElement>() {
+                    @Override
+                    public MobileElement apply(WebDriver d) {
+                        int width = driver.manage().window().getSize().width;
+                        int height = driver.manage().window().getSize().height;
+                        return (MobileElement)switchcase(type,text);
+                    }
+                });
+        return element;
+    }
 
     public  void longClick(String id){
         WebElement longClick = driver.findElement(By.id(id));
@@ -89,11 +138,11 @@ public class BaseTestCase {
 
 
 
-    public static boolean isElementExist(AndroidDevice driver,By Locator) {
+    public static boolean isElementExist(AndroidDevice driver, By Locator) {
         try {
             driver.findElement(Locator);
             return true;
-        } catch (org.openqa.selenium.NoSuchElementException ex) {
+        } catch (NoSuchElementException ex) {
             return false;
         }
     }
@@ -102,7 +151,7 @@ public class BaseTestCase {
         try {
             driver.findElement(Locator);
             return true;
-        } catch (org.openqa.selenium.NoSuchElementException ex) {
+        } catch (NoSuchElementException ex) {
             return false;
         }
     }
@@ -115,7 +164,7 @@ public class BaseTestCase {
         }
 
     }
-    public static boolean isElementExist(AndroidDevice driver,String uiautomator){
+    public static boolean isElementExist(AndroidDevice driver, String uiautomator){
         try {
             driver.findElementByAndroidUIAutomator(uiautomator);
             return true;
@@ -152,7 +201,7 @@ public class BaseTestCase {
         File f2 = driver.getScreenshotAs(OutputType.FILE);
         FileUtils.copyFile(f2, new File("target/reports/screenshots/"+screen_shot_name+".png"));
         BufferedImage img2 = ScreenUtil.getImageFromFile(f2);
-        Boolean same =ScreenUtil.sameAs(img1, img2, 0.98);
+        Boolean same = ScreenUtil.sameAs(img1, img2, 0.98);
         return same ;
     }
     public void tearDown() throws IOException, MessagingException {
@@ -164,24 +213,14 @@ public class BaseTestCase {
         String[] cc={"zecheng.fu@tcl.com","405960648@qq.com"};
         properties.setCc(cc);
         properties.setMail_host("smtp.qq.com");
-        properties.setKey("lsslyuequtbodgah");
+        properties.setKey("");
         properties.setMail_user("2776119050@qq.com");
         properties.setPort(25);
         properties.setReceiver(cc);
         mailUtils.sendMail(properties);
     }
 
-    /**
-     *
-     * @param text
-     * @param duration
-     * @param type 0 ：text
-     *             1： id
-     *             2：contains
-     *             3：classname
-     *             4: desc
-     * @return
-     */
+
 
     public WebElement findElementInScrollView(String text,int duration,int type){
         MobileElement element = (new WebDriverWait(driver, 20))
@@ -192,30 +231,8 @@ public class BaseTestCase {
                         int height = driver.manage().window().getSize().height;
                         driver.swipe(width / 2, height * 9 / 20, width / 2, height / 20, duration);
                         logger.info("scroll=======" + height * 3 / 4 + " " + height / 8);
-                        WebElement mushroom=null;
-                        switch (type){
-                            case 0:
-                                mushroom =
-                                        driver.findByUiautomator_text(text);
-                                break;
-                            case 1:
-                                mushroom =
-                                        driver.findElement(By.id(text));
-                                break;
-                            case 2:
-                                mushroom =
-                                        driver.findByUiautomator_textContains(text);
-                                break;
-                            case 3:
-                                mushroom =
-                                        driver.findElementByClassName(text);
-                                break;
-                            case 4:
-                                mushroom =
-                                        driver.findByUiautomator_desc(text);
-                                break;
-                        }
-                        return (MobileElement) mushroom;
+
+                        return (MobileElement)switchcase(type,text);
                     }
                 });
             return element;
@@ -229,6 +246,14 @@ public class BaseTestCase {
                 }catch (Exception e){
                     return false;
                 }
+        }
+        public void erroCall(){
+            if( !AppiumListener.erro_list.isEmpty()){
+                String erro= AppiumListener.erro_list.toString();
+                AppiumListener.erro_list.clear();
+                assertFalse(true,erro);
+
+            }
         }
 
 

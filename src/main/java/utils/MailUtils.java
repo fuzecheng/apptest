@@ -24,7 +24,7 @@ public class MailUtils {
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.host",properties.getMail_host());//"smtp.qq.com"
         props.put("mail.user",properties.getMail_user());//"2776119050@qq.com"
-        props.put("mail.password", properties.getKey());//lsslyuequtbodgah
+        props.put("mail.password", properties.getKey());//
         props.put("mail.smtp.port",properties.getPort());//"25"
         props.put("mail.smtp.starttls.enable", "true");
         Authenticator authenticator = new Authenticator() {

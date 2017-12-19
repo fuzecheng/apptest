@@ -78,12 +78,7 @@ public class BPStrudentClientTest extends BaseTestCase {
         if (toastIsExist(5,toast)){
             AppiumListener.erro_list.add("Chat Server Erro");
         }
-        if( !AppiumListener.erro_list.isEmpty()){
-            String erro=AppiumListener.erro_list.toString();
-            AppiumListener.erro_list.clear();
-            assertFalse(true,erro);
-
-        }
+        erroCall();
 
     }
     @Test
