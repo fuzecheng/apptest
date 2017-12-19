@@ -1,8 +1,10 @@
 package utils;
 
+import io.appium.java_client.MobileElement;
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.events.EventFiringWebDriverFactory;
 import io.appium.java_client.events.api.general.ElementEventListener;
+import io.appium.java_client.functions.ExpectedCondition;
 import io.appium.java_client.remote.AutomationName;
 import io.appium.java_client.remote.MobileCapabilityType;
 import model.AppiumSettings;
@@ -11,6 +13,8 @@ import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,17 +47,46 @@ public class BaseTestCase {
 
 
 
-    public static void log(String message) {
-        logger.info(message);
-    }
-
-
     public  void longClick(String id){
         WebElement longClick = driver.findElement(By.id(id));
         new TouchAction(driver).longPress(longClick).waitAction(Duration.ofSeconds(3)).perform();
-
-
     }
+
+    /**
+     *
+     * @param text
+     * @param duration
+     * @param type
+     *             0 ：text
+     *             1： id
+     *             2：contains
+     *             3：classname
+     *             4: desc
+     */
+
+
+    public void longClick(String text,int duration,int type){
+        WebElement longClick=null;
+        switch (type){
+            case 0:
+                longClick=driver.findByUiautomator_text(text);
+                break;
+            case 1:
+                longClick=driver.findElement(By.id(text));
+                break;
+            case 2:
+                longClick=driver.findByUiautomator_textContains(text);
+                break;
+            case 3:
+                longClick=driver.findElement(By.className(text));
+                break;
+            case 4:
+                longClick=driver.findByUiautomator_desc(text);
+                break;
+        }
+        new TouchAction(driver).longPress(longClick).waitAction(Duration.ofSeconds(duration)).perform();
+    }
+
 
 
     public static boolean isElementExist(AndroidDevice driver,By Locator) {
@@ -93,8 +126,9 @@ public class BaseTestCase {
     }
     public DesiredCapabilities settings(AppiumSettings appiumSettings){
         File classpathRoot = new File(System.getProperty("user.dir"));
-        File appDir = new File(classpathRoot, "apps");
-        File app = new File(appDir, appiumSettings.getApk_file_name());
+        //File appDir = new File(classpathRoot, "apps");
+        File app = new File(appiumSettings.getApkPath()+"\\"+appiumSettings.getApk_file_name());
+        logger.info(appiumSettings.getApkPath()+"\\"+appiumSettings.getApk_file_name());
         DesiredCapabilities desiredCapabilities=new DesiredCapabilities();
         desiredCapabilities.setCapability(CapabilityType.SUPPORTS_LOCATION_CONTEXT, "");
         desiredCapabilities.setCapability("platformName",appiumSettings.getPlantform());
@@ -136,6 +170,66 @@ public class BaseTestCase {
         properties.setReceiver(cc);
         mailUtils.sendMail(properties);
     }
+
+    /**
+     *
+     * @param text
+     * @param duration
+     * @param type 0 ：text
+     *             1： id
+     *             2：contains
+     *             3：classname
+     *             4: desc
+     * @return
+     */
+
+    public WebElement findElementInScrollView(String text,int duration,int type){
+        MobileElement element = (new WebDriverWait(driver, 20))
+                .until(new ExpectedCondition<MobileElement>() {
+                    @Override
+                    public MobileElement apply(WebDriver d) {
+                        int width = driver.manage().window().getSize().width;
+                        int height = driver.manage().window().getSize().height;
+                        driver.swipe(width / 2, height * 9 / 20, width / 2, height / 20, duration);
+                        logger.info("scroll=======" + height * 3 / 4 + " " + height / 8);
+                        WebElement mushroom=null;
+                        switch (type){
+                            case 0:
+                                mushroom =
+                                        driver.findByUiautomator_text(text);
+                                break;
+                            case 1:
+                                mushroom =
+                                        driver.findElement(By.id(text));
+                                break;
+                            case 2:
+                                mushroom =
+                                        driver.findByUiautomator_textContains(text);
+                                break;
+                            case 3:
+                                mushroom =
+                                        driver.findElementByClassName(text);
+                                break;
+                            case 4:
+                                mushroom =
+                                        driver.findByUiautomator_desc(text);
+                                break;
+                        }
+                        return (MobileElement) mushroom;
+                    }
+                });
+            return element;
+    }
+
+        public boolean toastIsExist(int time,String toast){
+                try {
+                    WebDriverWait driverWait = new WebDriverWait(driver, time);
+                    driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(".//*[contains(@text,'" + toast + "')]")));
+                    return true;
+                }catch (Exception e){
+                    return false;
+                }
+        }
 
 
 }

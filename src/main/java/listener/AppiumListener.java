@@ -6,13 +6,15 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testng.Assert;
 import utils.AndroidDevice;
 import utils.BaseTestCase;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AppiumListener implements AppiumWebDriverEventListener {
     private Logger logger = LoggerFactory.getLogger(AppiumListener.class);
-
+    public static List<String> erro_list=new ArrayList<>();
     AndroidDevice androidDevice;
 
     public AppiumListener(AndroidDevice androidDevice) {
@@ -94,31 +96,12 @@ public class AppiumListener implements AppiumWebDriverEventListener {
     @Override
     public void beforeFindBy(By by, WebElement element, WebDriver driver) {
         while (true) {
-            if (BaseTestCase.isElementExist("new UiSelector().text(\"Allow\")")) {
-                logger.info("=================Allow click================");
-                androidDevice.findElementByAndroidUIAutomator("new UiSelector().text(\"Allow\")").click();
-            } else if (BaseTestCase.isElementExist("new UiSelector().text(\"Always\")") &&
-                    (BaseTestCase.isElementExist("new UiSelector().text(\"Use Joy Launcher as Home\")"))) {
-                androidDevice.findElementByAndroidUIAutomator("new UiSelector().text(\"Always\")").click();
-                logger.info("================Always click================");
+            if (BaseTestCase.isElementExist("new UiSelector().textContains(\"Detected problems with app\")")){
+                logger.error("Libary erro");
+                androidDevice.findByUiautomator_text("确定").click();
+                AppiumListener.erro_list.add("Libary erro");
                 break;
-            } else if (BaseTestCase.isElementExist("new UiSelector().text(\"Always\")") &&
-                    BaseTestCase.isElementExist("new UiSelector().text(\"Joy Launcher\")")) {
-                androidDevice.findElementByAndroidUIAutomator("new UiSelector().text(\"Joy Launcher\")").click();
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                androidDevice.findElementByAndroidUIAutomator("new UiSelector().text(\"Always\")").click();
-                logger.info("=================Joy Launcher&&Always click======================");
-                break;
-            } else if (BaseTestCase.isElementExist("new UiSelector().textContains(\"Unfortunately\")")) {
-                logger.error("-------------crash--------------");
-                androidDevice.findElementByAndroidUIAutomator("new UiSelector().text(\"OK\")").click();
-                Assert.assertTrue(false, "-------------crash--------------");
-                break;
-            } else {
+            }else {
                 break;
             }
         }

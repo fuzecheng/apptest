@@ -3,83 +3,31 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
-    <groupId>1.0</groupId>
-    <artifactId>1.0</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
-            </plugin>
-
-
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>1.1.1</version>
-                <executions>
-                    <execution>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>java</goal>
-                        </goals>
-                        <configuration>
-                            <includePluginDependencies>true</includePluginDependencies>
-                            <mainClass>utils.MailUtils</mainClass>
-                            <!--<arguments>-->
-                            <!--<argument>11</argument>-->
-                            <!--<argument>22</argument>-->
-                            <!--</arguments>-->
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
-
-    <!-- https://mvnrepository.com/artifact/io.appium/java-client -->
+    <groupId>cc.bodyplus</groupId>
+    <artifactId>cc.bodyplus</artifactId>
+    <version>1.0</version>
+    <packaging>jar</packaging>
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/io.appium/java-client -->
-        <!--<dependency>-->
-        <!--<groupId>io.appium</groupId>-->
-        <!--<artifactId>java-client</artifactId>-->
-        <!--<version>5.0.0</version>-->
-        <!--</dependency>-->
-        <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
             <version>4.5.2</version>
         </dependency>
-
-
         <dependency>
             <groupId>io.appium</groupId>
             <artifactId>java-client</artifactId>
             <version>5.0.3</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/io.appium/java-client -->
-        <!--<dependency>-->
-        <!--<groupId>io.appium</groupId>-->
-        <!--<artifactId>java-client</artifactId>-->
-        <!--<version>4.1.2</version>-->
-        <!--</dependency>-->
         <dependency>
             <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.4</version>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.5</version>
         </dependency>
-
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.14</version>
+        </dependency>
         <dependency>
             <groupId>org.uncommons</groupId>
             <artifactId>reportng</artifactId>
@@ -92,7 +40,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
         <dependency>
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>
@@ -110,47 +57,89 @@
             <artifactId>extentreports</artifactId>
             <version>3.0.3</version>
         </dependency>
-
-        <!-- https://mvnrepository.com/artifact/com.relevantcodes/extentreports -->
-
-        <!--<dependency>-->
-        <!--<groupId>com.relevantcodes</groupId>-->
-        <!--<artifactId>extentreports</artifactId>-->
-        <!--<version>2.40.2</version>-->
-        <!--</dependency>-->
-
-        <!-- https://mvnrepository.com/artifact/com.aventstack/extentreports -->
-        <!--<dependency>-->
-        <!--<groupId>com.aventstack</groupId>-->
-        <!--<artifactId>extentreports</artifactId>-->
-        <!--<version>3.0.6</version>-->
-        <!--<scope>provided</scope>-->
-        <!--</dependency>-->
         <dependency>
             <groupId>nu.pattern</groupId>
             <artifactId>opencv</artifactId>
             <version>2.4.9-4</version>
         </dependency>
         <dependency>
-            <groupId>com.testdroid</groupId>
-            <artifactId>mobile-opencv-image-recognition-library</artifactId>
-            <version>0.3</version>
-        </dependency>
-
-        <dependency>
             <groupId>javax.mail</groupId>
             <artifactId>mail</artifactId>
             <version>1.4.1</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/javax.mail/javax.mail-api -->
-        <!--<dependency>-->
-        <!--<groupId>javax.mail</groupId>-->
-        <!--<artifactId>javax.mail-api</artifactId>-->
-        <!--<version>1.5.6</version>-->
-        <!--</dependency>-->
-
-
     </dependencies>
-
-
+    <build>
+        <sourceDirectory>src/main/java</sourceDirectory>
+        <resources>
+            <resource>
+                <directory>/src/main/resources</directory>
+                <targetPath>${project.build.directory}</targetPath>
+                <excludes>
+                    <exclude>**/*.java</exclude>
+                </excludes>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.1</version>
+                <configuration>
+                    <attach>true</attach>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.TestNGCase</mainClass>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
+                        </manifest>
+                        <manifestEntries>
+                            <Class-Path>./</Class-Path>
+                        </manifestEntries>
+                    </archive>
+                    <classesDirectory>
+                    </classesDirectory>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>
+                                ${project.build.directory}/lib
+                            </outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

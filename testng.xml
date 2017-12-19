@@ -7,6 +7,8 @@
         <class name="com.BPStrudentClientTest">
             <methods >
                 <include name="testLogin"/>
+                <include name="testAddCourse"/>
+                <include name="testDeleteCourse"/>
             </methods>
         </class>
     </classes>

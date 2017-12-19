@@ -1,6 +1,7 @@
 package com;
 
 import io.appium.java_client.TouchAction;
+import io.appium.java_client.android.AndroidKeyCode;
 import io.appium.java_client.events.EventFiringWebDriverFactory;
 import listener.AppiumListener;
 import model.AppiumSettings;
@@ -16,7 +17,6 @@ import org.testng.annotations.Test;
 import utils.AndroidDevice;
 import utils.BaseTestCase;
 import utils.LogCatHelper;
-
 import javax.mail.MessagingException;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -26,7 +26,8 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertFalse;
+
 
 public class BPStrudentClientTest extends BaseTestCase {
 
@@ -45,9 +46,10 @@ public class BPStrudentClientTest extends BaseTestCase {
     @BeforeTest
     public void setUp() throws MalformedURLException, InterruptedException {
         AppiumSettings appiumSettings=new AppiumSettings();
-        appiumSettings.setApk_file_name("cc.bodyplus.v3.6.0.apk");
+        appiumSettings.setApkPath("C:\\Users\\Administrator\\.jenkins\\workspace\\BodyplusV3_Realese\\app\\build\\outputs\\apk");
+        appiumSettings.setApk_file_name("app-necess-debug.apk");
         appiumSettings.setPlantform("Android");
-        //0715f7bdaaec1938 192.168.185.101:5555
+        //0715f7bdaaec1938 192.168.93.101:5555
         appiumSettings.setDevice_name("0715f7bdaaec1938");
         appiumSettings.setPlatform_version("7.0");
         appiumSettings.setAppPackage("cc.bodyplus");
@@ -68,27 +70,67 @@ public class BPStrudentClientTest extends BaseTestCase {
     @Test
     public void  testLogin() throws InterruptedException {
         webDriverWait=new WebDriverWait(driver,10);
-        assertNotNull(webDriverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("cc.bodyplus:id/tv_login"))));
-        assertNotNull( webDriverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("cc.bodyplus:id/tv_register"))));
         driver.findElement(By.id("cc.bodyplus:id/tv_login")).click();
         driver.findElement(By.id("cc.bodyplus:id/edit_login_phone")).sendKeys("13728963515");
         driver.findElement(By.id("cc.bodyplus:id/edit_login_password")).sendKeys("fzc8802653");
         driver.findElement(By.id("cc.bodyplus:id/tv_login")).click();
-        sleep(3000);
+        String toast="聊天服务器登录失败";
+        if (toastIsExist(5,toast)){
+            AppiumListener.erro_list.add("Chat Server Erro");
+        }
+        if( !AppiumListener.erro_list.isEmpty()){
+            String erro=AppiumListener.erro_list.toString();
+            AppiumListener.erro_list.clear();
+            assertFalse(true,erro);
+
+        }
+
     }
     @Test
-    public void testAddCourse(){
-        elements=driver.findElements(By.id("cc.bodyplus:id/tab_menu_view"));
-        elements.get(2).click();
+    public void testAddCourse() throws InterruptedException {
+        driver.findElement(By.id("cc.bodyplus:id/tab_menu_train_view"));
         driver.findByUiautomator_text("训练计划").click();
-        driver.findByUiautomator_text("添加课程").click();
+        if (isElementExist("new UiSelector().text(\"添加课程\")")){
+            driver.findByUiautomator_text("添加课程").click();
+        }else {
+            findElementInScrollView("添加课程",800,0).click();
+        }
         driver.findElement(By.id("cc.bodyplus:id/image_bg")).click();
-        driver.findByUiautomator_text("跑步核心训练（三）").click();
+        elements=driver.findElements(By.className("android.widget.ImageView"));
+        elements.get(0).click();
         driver.findByUiautomator_text("加入计划").click();
+        driver.findByUiautomator_text("确定").click();
+        driver.findByUiautomator_text("开始训练").click();
+        //cc.bodyplus:id/image_del
+        driver.findElement(By.id("cc.bodyplus:id/image_del")).click();
+        webDriverWait=new WebDriverWait(driver,10);
+        webDriverWait.until(ExpectedConditions.presenceOfElementLocated(By.id("cc.bodyplus:id/image_pause")));
+        driver.findElement(By.id("cc.bodyplus:id/image_pause")).click();
+        driver.findElement(By.id("cc.bodyplus:id/linear_over")).click();
+        while (true){
+            if (isElementExist(By.id("cc.bodyplus:id/tab_menu_train_view"))){
+                break;
+            }
+            driver.pressKeyCode(AndroidKeyCode.BACK);
+            sleep(1000);
+        }
+    }
 
+
+
+
+
+    @Test
+    public void testDeleteCourse(){
+        longClick("跑步核心训练",3,2);
+        if (isElementExist(By.id("cc.bodyplus:id/confirm"))&&isElementExist(By.id("cc.bodyplus:id/cancel"))){
+            driver.findElement(By.id("cc.bodyplus:id/confirm")).click();
+        }
 
 
     }
+
+
     @Test
     public  void testAutoSports(){
         elements=driver.findElements(By.id("cc.bodyplus:id/tab_menu_view"));
@@ -100,7 +142,7 @@ public class BPStrudentClientTest extends BaseTestCase {
     @AfterTest
     public void tearDown() throws IOException, MessagingException {
         helper.stop();
-//        driver.removeApp("cc.bodyplus");
+        driver.removeApp("cc.bodyplus");
         driver.quit();
 //        sendMail();
     }

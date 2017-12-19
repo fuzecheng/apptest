@@ -7,6 +7,15 @@ public class AppiumSettings {
     private String platform_version;
     private String appPackage;
     private String appActivity;
+    private String apkPath;
+
+    public String getApkPath() {
+        return apkPath;
+    }
+
+    public void setApkPath(String apkPath) {
+        this.apkPath = apkPath;
+    }
 
     public String getApk_file_name() {
         return apk_file_name;

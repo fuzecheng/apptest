@@ -1,11 +1,11 @@
 package utils;
 
 import com.aventstack.extentreports.*;
-import com.aventstack.extentreports.markuputils.Markup;
 import com.aventstack.extentreports.model.TestAttribute;
 import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 import com.aventstack.extentreports.reporter.configuration.ChartLocation;
 import com.aventstack.extentreports.reporter.configuration.Theme;
+import model.FilePath;
 import org.testng.*;
 import org.testng.xml.XmlSuite;
 
@@ -16,9 +16,8 @@ import java.util.*;
 
 public class ExtentTestNGIReporterListener implements IReporter {
     //生成的路径以及文件名
-    private static final String OUTPUT_FOLDER = "test-output/";
-    private static final String FILE_NAME = "index.html";
 
+    private static final String FILE_NAME = "index.html";
     private ExtentReports extent;
 
     @Override
@@ -102,17 +101,17 @@ public class ExtentTestNGIReporterListener implements IReporter {
 
     private void init() {
         //文件夹不存在的话进行创建
-        File reportDir= new File(OUTPUT_FOLDER);
+        File reportDir= new File(FilePath.TEST_OUTPUT);
         if(!reportDir.exists()&& !reportDir .isDirectory()){
             reportDir.mkdir();
         }
-        ExtentHtmlReporter htmlReporter = new ExtentHtmlReporter(OUTPUT_FOLDER + FILE_NAME);
+        ExtentHtmlReporter htmlReporter = new ExtentHtmlReporter(FilePath.TEST_OUTPUT + FILE_NAME);
         htmlReporter.config().setDocumentTitle("Report");
         htmlReporter.config().setReportName("BodyPlus TestCase");
         htmlReporter.config().setChartVisibilityOnOpen(true);
         htmlReporter.config().setTestViewChartLocation(ChartLocation.TOP);
         htmlReporter.config().setTheme(Theme.STANDARD);
-        htmlReporter.config().setCSS(".node.level-1  ul{ display:none;} .node.level-1.active ul{display:block;}");
+        htmlReporter.config().setCSS(".node.level-1  ul{ display:none;} . node.level-1.active ul{display:block;}");
         htmlReporter.config().setResourceCDN(ResourceCDN.EXTENTREPORTS);
         extent = new ExtentReports();
         extent.attachReporter(htmlReporter);
@@ -174,7 +173,8 @@ public class ExtentTestNGIReporterListener implements IReporter {
                 //"../img/"+result.getMethod().getMethodName()+".png"
                 if (result.getThrowable() != null) {
                     try {
-                        test.fail("details", MediaEntityBuilder.createScreenCaptureFromPath("../img/"+result.getMethod().getMethodName()+".png").build());
+                        //System.getProperty("user.dir")+"\\test-output\\"+
+                        test.fail("details", MediaEntityBuilder.createScreenCaptureFromPath(result.getMethod().getMethodName()+".png").build());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

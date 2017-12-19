@@ -1,15 +1,13 @@
 package utils;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import model.FilePath;
+
+import java.io.*;
 
 /**
  * Created by zecheng on 2016/7/19.
  */
+
 /**
  * log日志统计保存
  *
@@ -52,7 +50,7 @@ public class LogCatHelper {
 
         public LogDumper(String package_name) {
             try {
-                File dir=new File(System.getProperty("user.dir")+"\\test-output"+File.separator);
+                File dir=new File(System.getProperty("user.dir")+File.separator+ FilePath.TEST_OUTPUT);
                 if (!dir.exists()){
                     dir.mkdir();
                 }
