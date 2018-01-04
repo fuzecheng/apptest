@@ -7,6 +7,7 @@ import io.appium.java_client.remote.AutomationName;
 import io.appium.java_client.remote.MobileCapabilityType;
 import listener.AppiumListener;
 import model.AppiumSettings;
+import model.DriverInstance;
 import model.MailsProperties;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
@@ -16,23 +17,34 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.annotations.BeforeSuite;
 
 import javax.mail.MessagingException;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.time.Duration;
+import java.util.LinkedList;
+import java.util.List;
 
 import static org.testng.Assert.assertFalse;
 
 public class BaseTestCase {
-    public static AndroidDevice driver;
+    List<WebElement> elements;
+    public static AndroidDriver driver;
     public static Logger logger= LoggerFactory.getLogger(BaseTestCase.class);
     public static TouchAction action;
+    @BeforeSuite
+    public void setUp() throws MalformedURLException {
+        driver= DriverInstance.getInstance().getAndroidDriver();
+        action = new TouchAction(driver);
+        setdriver(driver);
+        elements = new LinkedList();
+    }
 
-
-    public void setdriver(AndroidDevice driver){
+    public void setdriver(AndroidDriver driver){
         BaseTestCase.driver =driver;
     }
 
@@ -45,100 +57,10 @@ public class BaseTestCase {
         Thread.sleep(seconds);
     }
 
-    /**
-     *
-     * @param text
-     * @param type 0 ：text
-     *             1： id
-     *             2：contains
-     *             3：classname
-     *             4: desc
-     * @return
-     */
-    public WebElement switchcase(int type,String text){
-        WebElement mushroom=null;
-        switch (type){
-            case 0:
-                mushroom =
-                        driver.findByUiautomator_text(text);
-                break;
-            case 1:
-                mushroom =
-                        driver.findElement(By.id(text));
-                break;
-            case 2:
-                mushroom =
-                        driver.findByUiautomator_textContains(text);
-                break;
-            case 3:
-                mushroom =
-                        driver.findElementByClassName(text);
-                break;
-            case 4:
-                mushroom =
-                        driver.findByUiautomator_desc(text);
-                break;
-        }
-
-        return  mushroom;
-    }
-
-    public WebElement waitElement(int time,int type,String text){
-        MobileElement element = (new WebDriverWait(driver, time))
-                .until(new ExpectedCondition<MobileElement>() {
-                    @Override
-                    public MobileElement apply(WebDriver d) {
-                        int width = driver.manage().window().getSize().width;
-                        int height = driver.manage().window().getSize().height;
-                        return (MobileElement)switchcase(type,text);
-                    }
-                });
-        return element;
-    }
-
-    public  void longClick(String id){
-        WebElement longClick = driver.findElement(By.id(id));
-        new TouchAction(driver).longPress(longClick).waitAction(Duration.ofSeconds(3)).perform();
-    }
-
-    /**
-     *
-     * @param text
-     * @param duration
-     * @param type
-     *             0 ：text
-     *             1： id
-     *             2：contains
-     *             3：classname
-     *             4: desc
-     */
-
-
-    public void longClick(String text,int duration,int type){
-        WebElement longClick=null;
-        switch (type){
-            case 0:
-                longClick=driver.findByUiautomator_text(text);
-                break;
-            case 1:
-                longClick=driver.findElement(By.id(text));
-                break;
-            case 2:
-                longClick=driver.findByUiautomator_textContains(text);
-                break;
-            case 3:
-                longClick=driver.findElement(By.className(text));
-                break;
-            case 4:
-                longClick=driver.findByUiautomator_desc(text);
-                break;
-        }
-        new TouchAction(driver).longPress(longClick).waitAction(Duration.ofSeconds(duration)).perform();
-    }
 
 
 
-    public static boolean isElementExist(AndroidDevice driver, By Locator) {
+    public static boolean isElementExist(AndroidDriver driver, By Locator) {
         try {
             driver.findElement(Locator);
             return true;
@@ -164,7 +86,7 @@ public class BaseTestCase {
         }
 
     }
-    public static boolean isElementExist(AndroidDevice driver, String uiautomator){
+    public static boolean isElementExist(AndroidDriver driver, String uiautomator){
         try {
             driver.findElementByAndroidUIAutomator(uiautomator);
             return true;
@@ -173,25 +95,7 @@ public class BaseTestCase {
         }
 
     }
-    public DesiredCapabilities settings(AppiumSettings appiumSettings){
-        File classpathRoot = new File(System.getProperty("user.dir"));
-        //File appDir = new File(classpathRoot, "apps");
-        File app = new File(appiumSettings.getApkPath()+"\\"+appiumSettings.getApk_file_name());
-        logger.info(appiumSettings.getApkPath()+"\\"+appiumSettings.getApk_file_name());
-        DesiredCapabilities desiredCapabilities=new DesiredCapabilities();
-        desiredCapabilities.setCapability(CapabilityType.SUPPORTS_LOCATION_CONTEXT, "");
-        desiredCapabilities.setCapability("platformName",appiumSettings.getPlantform());
-        desiredCapabilities.setCapability("deviceName", appiumSettings.getDevice_name());
-        desiredCapabilities.setCapability("noReset", "True");
-        desiredCapabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, AutomationName.ANDROID_UIAUTOMATOR2);
-        desiredCapabilities.setCapability("platformVersion", appiumSettings.getPlatform_version());
-        desiredCapabilities.setCapability("app", app.getAbsolutePath());
-        desiredCapabilities.setCapability("appPackage", appiumSettings.getAppPackage());
-        desiredCapabilities.setCapability("appActivity", appiumSettings.getAppActivity());
-        desiredCapabilities.setCapability("unicodeKeyboard", "True");
-        desiredCapabilities.setCapability("resetKeyboard", "True");
-        return desiredCapabilities;
-    }
+
 
 
     public boolean imgCompare(String define_name,String screen_shot_name) throws IOException {
@@ -220,25 +124,7 @@ public class BaseTestCase {
         mailUtils.sendMail(properties);
     }
 
-
-
-    public WebElement findElementInScrollView(String text,int duration,int type){
-        MobileElement element = (new WebDriverWait(driver, 20))
-                .until(new ExpectedCondition<MobileElement>() {
-                    @Override
-                    public MobileElement apply(WebDriver d) {
-                        int width = driver.manage().window().getSize().width;
-                        int height = driver.manage().window().getSize().height;
-                        driver.swipe(width / 2, height * 9 / 20, width / 2, height / 20, duration);
-                        logger.info("scroll=======" + height * 3 / 4 + " " + height / 8);
-
-                        return (MobileElement)switchcase(type,text);
-                    }
-                });
-            return element;
-    }
-
-        public boolean toastIsExist(int time,String toast){
+        public  boolean toastIsExist(int time,String toast){
                 try {
                     WebDriverWait driverWait = new WebDriverWait(driver, time);
                     driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(".//*[contains(@text,'" + toast + "')]")));
@@ -247,6 +133,7 @@ public class BaseTestCase {
                     return false;
                 }
         }
+
         public void erroCall(){
             if( !AppiumListener.erro_list.isEmpty()){
                 String erro= AppiumListener.erro_list.toString();

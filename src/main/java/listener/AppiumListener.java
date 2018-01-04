@@ -6,7 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import utils.AndroidDevice;
+import utils.AndroidDriver;
 import utils.BaseTestCase;
 
 import java.util.ArrayList;
@@ -15,10 +15,10 @@ import java.util.List;
 public class AppiumListener implements AppiumWebDriverEventListener {
     private Logger logger = LoggerFactory.getLogger(AppiumListener.class);
     public static List<String> erro_list=new ArrayList<>();
-    AndroidDevice androidDevice;
+    AndroidDriver androidDriver;
 
-    public AppiumListener(AndroidDevice androidDevice) {
-        this.androidDevice = androidDevice;
+    public AppiumListener(AndroidDriver androidDriver) {
+        this.androidDriver = androidDriver;
 
     }
 
@@ -98,7 +98,7 @@ public class AppiumListener implements AppiumWebDriverEventListener {
         while (true) {
             if (BaseTestCase.isElementExist("new UiSelector().textContains(\"Detected problems with app\")")){
                 logger.error("Libary erro");
-                androidDevice.findByUiautomator_text("确定").click();
+                androidDriver.findByUiautomator_text("确定").click();
                 AppiumListener.erro_list.add("Libary erro");
                 break;
             }else {

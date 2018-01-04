@@ -1,0 +1,34 @@
+- testcase:
+  - step:
+    - element_info: cc.bodyplus:id/tv_login
+      find_type: id
+      operate_type: click
+    - element_info: cc.bodyplus:id/edit_login_phone
+      find_type: id
+      operate_type: send_keys
+      text: 13728963515
+    - element_info: cc.bodyplus:id/edit_login_password
+      find_type: id
+      operate_type: send_keys
+      text: fzc8802653
+    - element_info: cc.bodyplus:id/tv_login
+      find_type: id
+      operate_type: click
+  - check:
+    - element_info: 训练计划
+      find_type: name
+
+- testcase:
+  - step:
+    - element_info: cc.bodyplus:id/tab_menu_me_view
+      find_type: id
+      operate_type: click
+    - element_info: cc.bodyplus:id/view_setting
+      find_type: id
+      operate_type: click
+    - element_info: cc.bodyplus:id/logout_btn
+      find_type: id
+      operate_type: click
+  - check:
+    - element_info: cc.bodyplus:id/tv_login
+      find_type: id

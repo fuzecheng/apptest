@@ -1,16 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Suite" parallel="classes" thread-count="3">
-    <test verbose="2" preserve-order="true" name="TestDebug">
+<suite name="Suite">
+    <test verbose="2"  preserve-order="true" name="TestDebug">
     <parameter name="driverName" value="chrome" />
     <classes>
-        <class name="com.BPStrudentClientTest">
+        <!--<class name="com.BPStrudentClientTest">-->
+            <!--<methods >-->
+                <!--<include name="testLogin"/>-->
+                <!--<include name="testAddCourse"/>-->
+                <!--&lt;!&ndash;<include name="testDeleteCourse"/>&ndash;&gt;-->
+                <!--&lt;!&ndash;<include name="testBindEquipment"/>&ndash;&gt;-->
+                <!--&lt;!&ndash;<include name="testFreeSports"/>&ndash;&gt;-->
+                <!--&lt;!&ndash;<include name="testDeleteFreeSport"/>&ndash;&gt;-->
+                <!--&lt;!&ndash;<include name="testUnBindEquipment"/>&ndash;&gt;-->
+            <!--</methods>-->
+        <!--</class>-->
+        <class name="com.TestLogin">
             <methods >
+                <include name="testErroLogin"/>
                 <include name="testLogin"/>
-                <include name="testAddCourse"/>
-                <include name="testDeleteCourse"/>
+
+                <!--<include name="testDeleteCourse"/>-->
+                <!--<include name="testBindEquipment"/>-->
+                <!--<include name="testFreeSports"/>-->
+                <!--<include name="testDeleteFreeSport"/>-->
+                <!--<include name="testUnBindEquipment"/>-->
             </methods>
         </class>
+        <class name="test.DeviceBindTest">
+            <methods >
+            </methods>
+        </class>
+
+
+
     </classes>
     </test> <!-- Test -->
     <listeners>

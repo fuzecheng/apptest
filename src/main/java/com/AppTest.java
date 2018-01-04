@@ -8,6 +8,7 @@ import io.appium.java_client.events.EventFiringWebDriverFactory;
 import io.appium.java_client.functions.ExpectedCondition;
 import listener.AppiumListener;
 import model.AppiumSettings;
+import model.DriverInstance;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -19,10 +20,10 @@ import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
-import utils.AndroidDevice;
+import utils.AndroidDriver;
 import utils.BaseTestCase;
 import utils.LogCatHelper;
-import utils.MailUtils;
+
 import javax.annotation.Nullable;
 import javax.mail.MessagingException;
 import java.io.IOException;
@@ -51,7 +52,7 @@ public class AppTest extends BaseTestCase {
 
 
     @BeforeTest
-    public void setUp() throws MalformedURLException, InterruptedException {
+    public void setUp() throws MalformedURLException {
         //设置apk的路径
         AppiumSettings appiumSettings=new AppiumSettings();
         appiumSettings.setApk_file_name("2018launcher_v1.4.apk");
@@ -60,7 +61,7 @@ public class AppTest extends BaseTestCase {
         appiumSettings.setPlatform_version("6.0");
         appiumSettings.setAppPackage("com.tct.launcher");
         appiumSettings.setAppActivity(".Launcher");
-        driver = new AndroidDevice(new URL("http://127.0.0.1:4723/wd/hub"), settings(appiumSettings));
+        driver= DriverInstance.getInstance().getAndroidDriver();
         action = new TouchAction(driver);
         driver.context("NATIVE_APP");
         setdriver(driver);
@@ -284,7 +285,7 @@ public class AppTest extends BaseTestCase {
     public void testChangeTheme() throws InterruptedException, IOException {
         driver.pressKeyCode(AndroidKeyCode.HOME);
         sleep(2000);
-        longClick("com.tct.launcher:id/workspace");
+        driver.longClick("com.tct.launcher:id/workspace");
         if (isElementExist(By.id("com.tct.launcher:id/theme_button"))) {
             driver.findElement(By.id("com.tct.launcher:id/theme_button")).click();
 //            WebDriverWait webDriverWait=new WebDriverWait(driver,5);
@@ -409,7 +410,7 @@ public class AppTest extends BaseTestCase {
      */
     public void loginWallpaper() {
         driver.pressKeyCode(AndroidKeyCode.HOME);
-        longClick("com.tct.launcher:id/workspace");
+        driver.longClick("com.tct.launcher:id/workspace");
         element = driver.findElement(By.id("com.tct.launcher:id/wallpaper_button"));
         element.click();
 
@@ -421,7 +422,7 @@ public class AppTest extends BaseTestCase {
      */
 
     public void controlSettingsButton() throws InterruptedException {
-        longClick("com.tct.launcher:id/workspace");
+        driver.longClick("com.tct.launcher:id/workspace");
         element = driver.findElement(By.id("com.tct.launcher:id/settings_button"));
         element.click();
         elements = driver.findElements(By.id("android:id/switchWidget"));
@@ -438,7 +439,7 @@ public class AppTest extends BaseTestCase {
      */
     public void loginWidget() {
         driver.pressKeyCode(AndroidKeyCode.HOME);
-        longClick("com.tct.launcher:id/workspace");
+        driver.longClick("com.tct.launcher:id/workspace");
         element = driver.findElement(By.id("com.tct.launcher:id/widget_button"));
         element.click();
 //        List<LogEntry> crashEntries = driver.manage().logs().get("crashlog").getAll();
@@ -462,7 +463,7 @@ public class AppTest extends BaseTestCase {
      */
 
     public void loginFeedBack() throws InterruptedException {
-        longClick("com.tct.launcher:id/workspace");
+        driver.longClick("com.tct.launcher:id/workspace");
         driver.findElement(By.id("com.tct.launcher:id/settings_button")).click();
         sleep(4000);
         driver.findByUiautomator_text("Feedback").click();

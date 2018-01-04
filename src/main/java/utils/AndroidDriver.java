@@ -1,124 +1,59 @@
 package utils;
 
-import interfaceUtil.UiWatcher;
+
+import io.appium.java_client.MobileElement;
 import io.appium.java_client.TouchAction;
-import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.functions.ExpectedCondition;
 import io.appium.java_client.service.local.AppiumDriverLocalService;
 import io.appium.java_client.service.local.AppiumServiceBuilder;
 import org.openqa.selenium.*;
 import org.openqa.selenium.remote.HttpCommandExecutor;
 import org.openqa.selenium.remote.http.HttpClient;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URL;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-public class AndroidDevice extends AndroidDriver {
-    Logger logger = LoggerFactory.getLogger(AndroidDevice.class);
-    private boolean mInWatcherContext = false;
-    private final List<String> mWatchersTriggers = new ArrayList<String>();
-    private final HashMap<String, UiWatcher> mWatchers = new HashMap<String, UiWatcher>();
+public class AndroidDriver extends io.appium.java_client.android.AndroidDriver {
+    Logger logger = LoggerFactory.getLogger(AndroidDriver.class);
 
-    public void registerWatcher(String name, UiWatcher watcher) {
-
-        if (mInWatcherContext) {
-            throw new IllegalStateException("Cannot register new watcher from within another");
-        }
-        mWatchers.put(name, watcher);
-    }
-    public void removeWatcher(String name) {
-        if (mInWatcherContext) {
-            throw new IllegalStateException("Cannot remove a watcher from within another");
-        }
-        mWatchers.remove(name);
-    }
-    public void runWatchers() {
-        if (mInWatcherContext) {
-            return;
-        }
-
-        for (String watcherName : mWatchers.keySet()) {
-            UiWatcher watcher = mWatchers.get(watcherName);
-            if (watcher != null) {
-                try {
-                    mInWatcherContext = true;
-                    if (watcher.checkForCondition()) {
-                        setWatcherTriggered(watcherName);
-                    }
-                } catch (Exception e) {
-                    logger.info( "Exceuting watcher: " + watcherName, e);
-                } finally {
-                    mInWatcherContext = false;
-                }
-            }
-        }
-    }
-
-    public boolean hasWatcherTriggered(String watcherName) {
-
-        return mWatchersTriggers.contains(watcherName);
-    }
-
-    public void resetWatcherTriggers() {
-
-        mWatchersTriggers.clear();
-    }
-    public boolean hasAnyWatcherTriggered() {
-
-        return mWatchersTriggers.size() > 0;
-    }
-    private void setWatcherTriggered(String watcherName) {
-
-        if (!hasWatcherTriggered(watcherName)) {
-            mWatchersTriggers.add(watcherName);
-        }
-    }
-
-
-
-
-
-    boolean isInWatcherContext() {
-        return mInWatcherContext;
-    }
-
-    public AndroidDevice(HttpCommandExecutor executor, Capabilities capabilities) {
+    public AndroidDriver(HttpCommandExecutor executor, Capabilities capabilities) {
         super(executor, capabilities);
     }
 
-    public AndroidDevice(URL remoteAddress, Capabilities desiredCapabilities) {
+    public AndroidDriver(URL remoteAddress, Capabilities desiredCapabilities) {
         super(remoteAddress, desiredCapabilities);
     }
 
-    public AndroidDevice(URL remoteAddress, HttpClient.Factory httpClientFactory, Capabilities desiredCapabilities) {
+    public AndroidDriver(URL remoteAddress, HttpClient.Factory httpClientFactory, Capabilities desiredCapabilities) {
         super(remoteAddress, httpClientFactory, desiredCapabilities);
     }
 
-    public AndroidDevice(AppiumDriverLocalService service, Capabilities desiredCapabilities) {
+    public AndroidDriver(AppiumDriverLocalService service, Capabilities desiredCapabilities) {
         super(service, desiredCapabilities);
     }
 
-    public AndroidDevice(AppiumDriverLocalService service, HttpClient.Factory httpClientFactory, Capabilities desiredCapabilities) {
+    public AndroidDriver(AppiumDriverLocalService service, HttpClient.Factory httpClientFactory, Capabilities desiredCapabilities) {
         super(service, httpClientFactory, desiredCapabilities);
     }
 
-    public AndroidDevice(AppiumServiceBuilder builder, Capabilities desiredCapabilities) {
+    public AndroidDriver(AppiumServiceBuilder builder, Capabilities desiredCapabilities) {
         super(builder, desiredCapabilities);
     }
 
-    public AndroidDevice(AppiumServiceBuilder builder, HttpClient.Factory httpClientFactory, Capabilities desiredCapabilities) {
+    public AndroidDriver(AppiumServiceBuilder builder, HttpClient.Factory httpClientFactory, Capabilities desiredCapabilities) {
         super(builder, httpClientFactory, desiredCapabilities);
     }
 
-    public AndroidDevice(HttpClient.Factory httpClientFactory, Capabilities desiredCapabilities) {
+    public AndroidDriver(HttpClient.Factory httpClientFactory, Capabilities desiredCapabilities) {
         super(httpClientFactory, desiredCapabilities);
     }
 
-    public AndroidDevice(Capabilities desiredCapabilities) {
+    public AndroidDriver(Capabilities desiredCapabilities) {
         super(desiredCapabilities);
     }
 
@@ -245,7 +180,6 @@ public class AndroidDevice extends AndroidDriver {
         touchAction.longPress(origin_el).moveTo(destination_el).release().perform();
     }
 
-
     public WebElement findByUiautomator_text(String name) {
         return findElementByAndroidUIAutomator("new UiSelector().text(\""+name+"\")");
     }
@@ -256,4 +190,112 @@ public class AndroidDevice extends AndroidDriver {
     public WebElement findByUiautomator_desc(String description) {
         return findElementByAndroidUIAutomator("new UiSelector().description(\""+description+"\")");
     }
+    /**
+     *
+     * @param text
+     * @param type 0 ：text
+     *             1： id
+     *             2：contains
+     *             3：classname
+     *             4: desc
+     * @return
+     */
+    public WebElement switchcase(int type,String text){
+        WebElement mushroom=null;
+        switch (type){
+            case 0:
+                mushroom =
+                       findByUiautomator_text(text);
+                break;
+            case 1:
+                mushroom =
+                       findElement(By.id(text));
+                break;
+            case 2:
+                mushroom =
+                      findElement(By.xpath("//*[contains(@text,\""+text+"\")]"));
+                break;
+            case 3:
+                mushroom =
+                        findElementByClassName(text);
+                break;
+            case 4:
+                mushroom =
+                        findByUiautomator_desc(text);
+                break;
+        }
+
+        return  mushroom;
+    }
+
+    public WebElement waitElement(int time,int type,String text){
+        WebElement element = (new WebDriverWait(this, time))
+                .until(new ExpectedCondition<MobileElement>() {
+                    @Override
+                    public MobileElement apply(WebDriver d) {
+                        return (MobileElement)switchcase(type,text);
+                    }
+                });
+        return element;
+    }
+
+    public WebElement findElementInScrollView(String text,int duration,int type){
+        WebElement element = (new WebDriverWait(this, 20))
+                .until(new ExpectedCondition<MobileElement>() {
+                    @Override
+                    public MobileElement apply(WebDriver d) {
+                        int width = manage().window().getSize().width;
+                        int height = manage().window().getSize().height;
+                        swipe(width / 2, height * 9 / 20, width / 2, height / 20, duration);
+                        logger.info("scroll=======" + height * 3 / 4 + " " + height / 8);
+
+                        return (MobileElement)switchcase(type,text);
+                    }
+                });
+        return element;
+    }
+
+
+    public  void longClick(String id){
+        WebElement longClick = findElement(By.id(id));
+        new TouchAction(this).longPress(longClick).waitAction(Duration.ofSeconds(3)).perform();
+    }
+
+    /**
+     *
+     * @param text
+     * @param duration
+     * @param type
+     *             0 ：text
+     *             1： id
+     *             2：contains
+     *             3：classname
+     *             4: desc
+     */
+
+
+    public void longClick(String text,int duration,int type){
+        WebElement longClick=null;
+        switch (type){
+            case 0:
+                longClick= findByUiautomator_text(text);
+                break;
+            case 1:
+                longClick=findElement(By.id(text));
+                break;
+            case 2:
+                longClick=findByUiautomator_textContains(text);
+                break;
+            case 3:
+                longClick=findElement(By.className(text));
+                break;
+            case 4:
+                longClick=findByUiautomator_desc(text);
+                break;
+        }
+        new TouchAction(this).longPress(longClick).waitAction(Duration.ofSeconds(duration)).perform();
+    }
+
+
+
 }

@@ -29,6 +29,11 @@
             <version>1.2.14</version>
         </dependency>
         <dependency>
+            <groupId>com.esotericsoftware.yamlbeans</groupId>
+            <artifactId>yamlbeans</artifactId>
+            <version>1.11</version>
+        </dependency>
+        <dependency>
             <groupId>org.uncommons</groupId>
             <artifactId>reportng</artifactId>
             <version>1.1.4</version>
